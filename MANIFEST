@@ -22,12 +22,9 @@ lib/OpusVL/Preferences/Schema/Result/PrfPreference.pm
 lib/OpusVL/Preferences/Schema/ResultSet/PrfDefault.pm
 lib/OpusVL/Preferences/Schema/ResultSet/PrfOwnerType.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 META.yml
-pref-test.t
 README
-t/.00-load.t.swp
-t/.pref-test.t.swp
 t/00-load.t
 t/boilerplate.t
 t/lib/OpusVL/Preferences/Schema/Result/TestOwner.pm
@@ -36,4 +33,3 @@ t/manifest.t
 t/pod-coverage.t
 t/pod.t
 t/pref-basic.t
-t/pref-test.t
