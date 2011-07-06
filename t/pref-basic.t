@@ -7,25 +7,20 @@ use lib "$FindBin::Bin/lib";
 use Test::DBIx::Class
 {
     schema_class => 'OpusVL::Preferences::Schema',
-    connect_info =>
-    [
-        'dbi:SQLite:dbname=:memory:','','', 
-        {
-            quote_char => '"',
-            name_sep   => '.',
-        }
-    ],
+	traits       => 'Testpostgresql'
 };
 
 my $rs = ResultSet ('TestOwner');
 
 my $defaults = $rs->prf_defaults;
 
+is_resultset ($defaults)  => 'Resultset sanity check';
+
 $defaults->populate
 ([
-	{ name => 'test1', default_value => '111' },
+	[qw/ name    default_value      /],
+	[qw/ test1   111                /],
 ]);
-
 
 my $owner = $rs->create ({ name => 'test' });
 
@@ -44,7 +39,6 @@ is_fields [qw/name default_value/] => $defaults,
 ], 'Check final fields are sensible';
 
  
-
 
 
 

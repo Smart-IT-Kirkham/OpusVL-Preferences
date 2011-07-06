@@ -94,11 +94,11 @@ sub prf_set
 
 	my $allprefs = $self->prf_preferences;
 	
-	my $pref = $allprefs->search ({ prfname => $prefname })->first;
+	my $pref = $allprefs->search ({ name => $prefname })->first;
 
 	if ($pref)
 	{
-		$pref->update ({ prfvalue => $value });
+		$pref->update ({ value => $value });
 	}
 	else
 	{

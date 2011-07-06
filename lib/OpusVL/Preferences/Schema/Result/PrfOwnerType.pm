@@ -18,6 +18,7 @@ __PACKAGE__->add_columns
 	{
 		data_type   => 'integer',
 		is_nullable => 0,
+		is_auto_increment => 1,
 	},
 
 	owner_table => 
