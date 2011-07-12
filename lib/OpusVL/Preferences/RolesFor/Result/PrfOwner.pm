@@ -1,6 +1,29 @@
 
 package OpusVL::Preferences::RolesFor::Result::PrfOwner;
 
+=head1 NAME 
+
+OpusVL::Preferences::RolesFor::Result::PrfOwner
+
+=head1 DESCRIPTION
+
+If you are using DBIx::Class::Schema::Loader add the necessary link fields manually, otherwise 
+add the following line to add the fields to your result class.
+
+    __PACKAGE__->prf_init_owner;
+
+=head1 SYNOPSIS
+
+=head1 METHODS
+
+=head1 COPYRIGHT and LICENSE
+
+Copyright (C) 2011 OpusVL
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut
+
 use strict;
 use warnings;
 use Moose::Role;
