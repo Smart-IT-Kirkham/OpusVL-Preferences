@@ -15,5 +15,13 @@ sub active
     });
 }
 
+sub active_first
+{
+    my $self = shift;
+    return $self->search(undef, {
+        order_by => [ { -desc => ['active'] }, { -asc => ['name'] } ], 
+    });
+}
+
 
 return 1;
