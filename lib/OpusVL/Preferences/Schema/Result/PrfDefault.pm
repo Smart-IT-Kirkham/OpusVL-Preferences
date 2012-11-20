@@ -42,6 +42,24 @@ __PACKAGE__->add_columns
 		data_type   => 'varchar',
 		is_nullable => 1
 	},
+
+    required =>
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+        default_value => 0,
+    },
+    active => 
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+        default_value => 1,
+    },
+    hidden => 
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
 );
 
 __PACKAGE__->set_primary_key(qw/prf_owner_type_id name/);
