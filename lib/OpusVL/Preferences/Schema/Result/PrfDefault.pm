@@ -63,5 +63,21 @@ __PACKAGE__->add_columns
 );
 
 __PACKAGE__->set_primary_key(qw/prf_owner_type_id name/);
+__PACKAGE__->has_many
+(
+	values => "OpusVL::Preferences::Schema::Result::PrfDefaultValues",
+	{
+		"foreign.name"      => "self.name",
+		"foreign.prf_owner_type_id" => "self.prf_owner_type_id",
+	},
+);
+
+sub form_options
+{
+    my $self = shift;
+    my @options = map { [ $_->value, $_->value ] } $self->values->sorted;
+    return \@options;
+}
+
 
 return 1;

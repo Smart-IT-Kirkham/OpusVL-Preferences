@@ -38,8 +38,10 @@ is_fields [qw/name default_value/] => $defaults,
 	[qw/test1 111/]
 ], 'Check final fields are sensible';
 
- 
-
+my $default = $defaults->first; 
+$default->create_related('values', { value => 'test' });
+$default->create_related('values', { value => 'test2' });
+eq_or_diff $default->form_options, [[ 'test', 'test' ], ['test2', 'test2']];
 
 
 done_testing;
