@@ -10,7 +10,7 @@ __PACKAGE__->table('prf_default_values');
 
 __PACKAGE__->add_columns(
     'id' => {
-        data_type         => "serial",
+        data_type         => "int",
         is_auto_increment => 1,
         is_nullable       => 0,
     },
