@@ -46,3 +46,26 @@ sub get_from_source
 
 return 1;
 
+
+=head1 NAME
+
+OpusVL::Preferences::Schema::ResultSet::PrfOwnerType
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 setup_from_source
+
+=head2 get_from_source
+
+=head1 ATTRIBUTES
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 OpusVL.
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut

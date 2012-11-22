@@ -81,3 +81,42 @@ sub form_options
 
 
 return 1;
+
+=head1 NAME
+
+OpusVL::Preferences::Schema::Result::PrfDefault
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 form_options
+
+=head1 ATTRIBUTES
+
+=head2 values
+
+=head2 prf_owner_type_id
+
+=head2 name
+
+=head2 default_value
+
+=head2 data_type
+
+=head2 comment
+
+=head2 required
+
+=head2 active
+
+=head2 hidden
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 OpusVL.
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut

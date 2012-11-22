@@ -58,3 +58,34 @@ __PACKAGE__->belongs_to
 
 return 1;
 
+
+=head1 NAME
+
+OpusVL::Preferences::Schema::Result::PrfPreference
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head1 ATTRIBUTES
+
+=head2 prf_owner
+
+=head2 prf_preference_id
+
+=head2 prf_owner_id
+
+=head2 prf_owner_type_id
+
+=head2 name
+
+=head2 value
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 OpusVL.
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut

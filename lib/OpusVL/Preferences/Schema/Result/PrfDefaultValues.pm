@@ -44,3 +44,32 @@ __PACKAGE__->meta->make_immutable();
 1;
 
 
+
+=head1 NAME
+
+OpusVL::Preferences::Schema::Result::PrfDefaultValues
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head1 ATTRIBUTES
+
+=head2 field
+
+=head2 id
+
+=head2 value
+
+=head2 prf_owner_type_id
+
+=head2 name
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 OpusVL.
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut

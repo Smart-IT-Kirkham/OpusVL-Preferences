@@ -60,3 +60,32 @@ __PACKAGE__->has_many
 
 return 1;
 
+
+=head1 NAME
+
+OpusVL::Preferences::Schema::Result::PrfOwnerType
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head1 ATTRIBUTES
+
+=head2 prf_owners
+
+=head2 prf_defaults
+
+=head2 prf_owner_type_id
+
+=head2 owner_table
+
+=head2 owner_resultset
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 OpusVL.
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut

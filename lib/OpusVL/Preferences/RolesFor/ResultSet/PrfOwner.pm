@@ -66,3 +66,32 @@ sub prf_defaults
 
 return 1;
 
+
+=head1 NAME
+
+OpusVL::Preferences::RolesFor::ResultSet::PrfOwner
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 prf_get_default
+
+=head2 prf_set_default
+
+=head2 setup_owner_type
+
+=head2 get_owner_type
+
+=head2 prf_defaults
+
+=head1 ATTRIBUTES
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 OpusVL.
+
+This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+
+=cut
