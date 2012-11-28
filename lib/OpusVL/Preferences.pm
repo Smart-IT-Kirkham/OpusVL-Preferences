@@ -5,7 +5,7 @@ use strict;
 
 =head1 NAME
 
-OpusVL::Preferences
+OpusVL::Preferences - Generic DBIC preferences module
 
 =head1 VERSION
 
