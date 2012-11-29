@@ -10,11 +10,41 @@ OpusVL::Preferences::RolesFor::Result::PrfOwner
 If you are using DBIx::Class::Schema::Loader add the necessary link fields manually, otherwise 
 add the following line to add the fields to your result class.
 
-    __PACKAGE__->prf_init_owner;
+    __PACKAGE__->prf_owner_init;
 
 =head1 SYNOPSIS
 
 =head1 METHODS
+
+=head2 prf_owner_init
+
+Tries to add the columns and relationships for your result class.  Call it like this,
+
+    __PACKAGE__->prf_owner_init;
+
+Your mileage may vary.
+
+=head2 prf_defaults
+
+ResultSet for the defaults.
+
+=head2 prf_preferences
+
+ResultSet of the preference values.
+
+=head2 prf_get
+
+Gets the setting.  If the object doesn't have the setting specified but there is a 
+default, the default will be returned.
+
+=head2 prf_set
+
+Sets the setting for the object.
+
+=head2 prf_reset
+
+Resets the settings against the object.  prf_get may still return a value if there is a default 
+for the setting.
 
 =head1 COPYRIGHT and LICENSE
 
