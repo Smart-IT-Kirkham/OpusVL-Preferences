@@ -14,6 +14,10 @@ resources (
     },
 );
 
+if ($Module::Install::AUTHOR) {
+    system("pod2text lib/OpusVL/Preferences.pm > README")
+        and die $!;
+}
 
 auto_install;
 
