@@ -46,6 +46,17 @@ Sets the setting for the object.
 Resets the settings against the object.  prf_get may still return a value if there is a default 
 for the setting.
 
+=head2 preferences_to_array
+
+Returns an array of the current results preferences.
+
+    $object->preferences_to_array();
+    # [{
+    #     name => $_->name, 
+    #     value => $_->value,
+    #     param => # assocaited PrfDefault parameter definition.
+    # } ];
+
 =head1 COPYRIGHT and LICENSE
 
 Copyright (C) 2011 OpusVL
@@ -120,6 +131,19 @@ sub prf_preferences
 	my $self = shift;
 
 	return $self->prf_owner->prf_preferences;
+}
+
+sub preferences_to_array
+{
+    my $self = shift;
+
+    my $preferences = $self->prf_preferences;
+    my @d = map { { 
+        name => $_->name, 
+        value => $_->value,
+        param => $self->prf_defaults->find({ name => $_->name }),
+    } } $preferences->all;
+    return \@d;
 }
 
 sub prf_get
