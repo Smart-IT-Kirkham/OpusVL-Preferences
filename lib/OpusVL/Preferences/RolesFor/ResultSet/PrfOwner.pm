@@ -64,6 +64,30 @@ sub prf_defaults
 	return $type->prf_defaults;
 }
 
+sub with_fields
+{
+    my ($self, $args) = @_;
+
+    my $me = $self->current_source_alias;
+    my @params;
+    my @joins;
+    my $x = 1;
+    for my $name (keys %$args)
+    {
+        my $alias = $x == 1 ? "prf_preferences" : "prf_preferences_$x";
+        my $value = $args->{$name};
+        push @params, {
+            "$alias.name" => $name,
+            "$alias.value" => $value,
+        };
+        push @joins, 'prf_preferences';
+        $x++;
+    }
+    $self->search({ -and => \@params }, {
+        join => { prf_owner => \@joins }
+    });
+}
+
 return 1;
 
 
@@ -84,6 +108,19 @@ OpusVL::Preferences::RolesFor::ResultSet::PrfOwner
 =head2 get_owner_type
 
 =head2 prf_defaults
+
+=head2 with_fields
+
+Searches the objecs with fields that match.  Pass it a hash of 
+name => value pairs and it will return a resultset of all 
+the owners that match all the requirements.  If you want to use 
+ilikes, you can, just like regular DBIC searches.  It will figure
+out the hard relationship stuff for you.
+
+    my $rs = Owner->with_fields({ 
+        'simple_test' => 'test',
+        'second_test' => { -ilike => 'test2' },
+    });
 
 =head1 ATTRIBUTES
 
