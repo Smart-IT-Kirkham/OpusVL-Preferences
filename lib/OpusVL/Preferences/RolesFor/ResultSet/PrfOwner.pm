@@ -68,7 +68,6 @@ sub with_fields
 {
     my ($self, $args) = @_;
 
-    my $me = $self->current_source_alias;
     my @params;
     my @joins;
     my $x = 1;
