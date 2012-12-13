@@ -23,6 +23,11 @@ sub active_first
     });
 }
 
+sub not_hidden
+{
+    my $self = shift;
+    return $self->search({ -or => [ hidden => 0, hidden => undef ] });
+}
 
 return 1;
 
@@ -37,6 +42,8 @@ OpusVL::Preferences::Schema::ResultSet::PrfDefault
 =head2 active
 
 =head2 active_first
+
+=head2 not_hidden
 
 =head1 ATTRIBUTES
 
