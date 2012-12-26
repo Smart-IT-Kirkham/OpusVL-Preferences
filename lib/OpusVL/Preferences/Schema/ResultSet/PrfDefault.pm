@@ -19,7 +19,7 @@ sub active_first
 {
     my $self = shift;
     return $self->search(undef, {
-        order_by => [ { -desc => ['active'] }, { -asc => ['name'] } ], 
+        order_by => [ { -desc => ['active'] }, { -asc => ['display_order', 'name'] } ], 
     });
 }
 
@@ -27,6 +27,12 @@ sub not_hidden
 {
     my $self = shift;
     return $self->search({ -or => [ hidden => 0, hidden => undef ] });
+}
+
+sub display_order
+{
+    my $self = shift;
+    return $self->search(undef, { order_by => [ 'display_order' ] } );
 }
 
 return 1;
@@ -44,6 +50,10 @@ OpusVL::Preferences::Schema::ResultSet::PrfDefault
 =head2 active_first
 
 =head2 not_hidden
+
+=head2 display_order
+
+Returns the preferences in the display order.
 
 =head1 ATTRIBUTES
 

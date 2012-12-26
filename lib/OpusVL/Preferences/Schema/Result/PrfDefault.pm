@@ -61,10 +61,18 @@ __PACKAGE__->add_columns
         is_nullable => 1,
     },
     # note: this isn't stricly enforced by the module.
+    # NOTE: might need to switch this to validator class
     unique_field => 
     {
         data_type => 'boolean',
         is_nullable => 1,
+    },
+
+    display_order => 
+    {
+        data_type => 'int',
+        is_nullable => 0,
+        default_value => 1,
     },
 );
 

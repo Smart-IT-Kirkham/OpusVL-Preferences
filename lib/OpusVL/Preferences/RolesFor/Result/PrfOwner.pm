@@ -138,7 +138,9 @@ sub preferences_to_array
     my $self = shift;
 
     my $preferences = $self->prf_preferences;
-    my @d = map { { 
+    my @d = sort { 
+        $a->{param}->display_order <=> $b->{param}->display_order 
+    } map { { 
         name => $_->name, 
         value => $_->value,
         param => $self->prf_defaults->find({ name => $_->name }),
