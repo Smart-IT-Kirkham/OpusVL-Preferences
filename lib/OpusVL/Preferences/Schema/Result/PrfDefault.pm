@@ -60,6 +60,12 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+    # note: this isn't stricly enforced by the module.
+    unique_field => 
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
 );
 
 __PACKAGE__->set_primary_key(qw/prf_owner_type_id name/);
