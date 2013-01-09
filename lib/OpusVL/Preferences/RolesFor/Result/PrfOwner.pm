@@ -57,6 +57,12 @@ Returns an array of the current results preferences.
     #     param => # assocaited PrfDefault parameter definition.
     # } ];
 
+=head2 safe_preferences_in_array
+
+Returns the same as preferences_to_array but instead of the param object it returns the 
+field label.  The safe refers to the fact that all the items in the hash are base types
+and therefore are trivially serializable.
+
 =head1 COPYRIGHT and LICENSE
 
 Copyright (C) 2011 OpusVL
@@ -146,6 +152,18 @@ sub preferences_to_array
         param => $self->prf_defaults->find({ name => $_->name }),
     } } $preferences->all;
     return \@d;
+}
+
+sub safe_preferences_in_array
+{
+    my $self = shift;
+    my $extra_params = $self->preferences_to_array;
+    my @cleaned_up = map { { 
+        name => $_->{name},
+        value => $_->{value},
+        label => $_->{param}->comment,
+    } } @$extra_params;
+    return \@cleaned_up;
 }
 
 sub prf_get

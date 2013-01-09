@@ -14,7 +14,7 @@ my $rs = ResultSet ('TestOwner');
 
 my $defaults = $rs->prf_defaults;
 
-is_resultset ($defaults)  => 'Resultset sanity check';
+is_resultset ($defaults); #  'Resultset sanity check'
 
 $defaults->populate
 ([
