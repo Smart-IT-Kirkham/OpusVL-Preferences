@@ -100,7 +100,7 @@ sub validate_extra_parameters
         {
             return 'Must specify ' . $field->name unless exists $params->{$field->name};
         }
-        if($field->can('unique') && $field->unique)
+        if($field->unique_field)
         {
             # check to see if it's unique
         }
