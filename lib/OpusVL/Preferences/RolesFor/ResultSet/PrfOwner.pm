@@ -87,6 +87,28 @@ sub with_fields
     });
 }
 
+sub validate_extra_parameters
+{
+    my $self = shift;
+    my $params = shift;
+
+    # check them against their defaults.
+    my @fields = $self->prf_defaults->active;
+    for my $field (@fields)
+    {
+        if($field->required)
+        {
+            return 'Must specify ' . $field->name unless exists $params->{$field->name};
+        }
+        if($field->can('unique') && $field->unique)
+        {
+            # check to see if it's unique
+        }
+        # FIXME: ought to check types.
+    }
+}
+
+
 return 1;
 
 
@@ -120,6 +142,8 @@ out the hard relationship stuff for you.
         'simple_test' => 'test',
         'second_test' => { -ilike => 'test2' },
     });
+
+=head2 validate_extra_parameters
 
 =head1 ATTRIBUTES
 
