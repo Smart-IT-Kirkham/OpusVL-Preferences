@@ -91,6 +91,8 @@ sub validate_extra_parameters
 {
     my $self = shift;
     my $params = shift;
+    my $unique_validator = shift;
+    my $id = shift;
 
     # check them against their defaults.
     my @fields = $self->prf_defaults->active;
@@ -103,6 +105,14 @@ sub validate_extra_parameters
         if($field->unique_field)
         {
             # check to see if it's unique
+            my $p = {
+                prf_owner_type_id => $field->prf_owner_type_id,
+            };
+            $p->{id} = $id if $id;
+            my $error = $unique_validator->validate('global_fields_' . $field->name, 
+                                                    $params->{$field->name}, $p, 
+                                                    { label => $field->comment });
+            return $error if $error;
         }
         # FIXME: ought to check types.
     }
