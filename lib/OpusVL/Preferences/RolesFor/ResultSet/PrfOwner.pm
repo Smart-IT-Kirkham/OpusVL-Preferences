@@ -87,6 +87,33 @@ sub with_fields
     });
 }
 
+sub validate_extra_parameter
+{
+    my $self = shift;
+    my $field = shift;
+    my $params = shift;
+    my $unique_validator = shift;
+    my $id = shift;
+
+    if($field->required)
+    {
+        return 'Must specify ' . $field->name unless exists $params->{$field->name};
+    }
+    if($field->unique_field)
+    {
+        # check to see if it's unique
+        my $p = {
+            prf_owner_type_id => $field->prf_owner_type_id,
+        };
+        $p->{id} = $id if $id;
+        my $error = $unique_validator->validate('global_fields_' . $field->name, 
+                                                $params->{$field->name}, $p, 
+                                                { label => $field->comment });
+        return $error if $error;
+    }
+    # FIXME: ought to check types.
+}
+
 sub validate_extra_parameters
 {
     my $self = shift;
@@ -98,23 +125,8 @@ sub validate_extra_parameters
     my @fields = $self->prf_defaults->active;
     for my $field (@fields)
     {
-        if($field->required)
-        {
-            return 'Must specify ' . $field->name unless exists $params->{$field->name};
-        }
-        if($field->unique_field)
-        {
-            # check to see if it's unique
-            my $p = {
-                prf_owner_type_id => $field->prf_owner_type_id,
-            };
-            $p->{id} = $id if $id;
-            my $error = $unique_validator->validate('global_fields_' . $field->name, 
-                                                    $params->{$field->name}, $p, 
-                                                    { label => $field->comment });
-            return $error if $error;
-        }
-        # FIXME: ought to check types.
+        my $error = $self->validate_extra_parameter($field, $params, $unique_validator, $id);
+        return $error if $error;
     }
 }
 
@@ -154,6 +166,8 @@ out the hard relationship stuff for you.
     });
 
 =head2 validate_extra_parameters
+
+=head2 validate_extra_parameter
 
 =head1 ATTRIBUTES
 
