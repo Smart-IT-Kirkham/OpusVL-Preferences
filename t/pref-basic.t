@@ -7,7 +7,8 @@ use lib "$FindBin::Bin/lib";
 use Test::DBIx::Class
 {
     schema_class => 'OpusVL::Preferences::Schema',
-	traits       => 'Testpostgresql'
+	traits       => 'Testpostgresql',
+    keep_db      => 1,
 }, 'TestOwner';
 
 my $rs = ResultSet ('TestOwner');
@@ -56,5 +57,7 @@ ok my $results = TestOwner->with_fields({
 });
 is $results->count, 0;
 
+ok my $s = TestOwner->select_extra_fields('test1', 'name');
+is $s->count, 1;
 
 done_testing;

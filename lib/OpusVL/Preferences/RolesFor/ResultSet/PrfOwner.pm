@@ -82,6 +82,27 @@ sub with_fields
         push @joins, 'prf_preferences';
         $x++;
     }
+    return $self->search({ -and => \@params }, {
+        join => { prf_owner => \@joins }
+    });
+}
+
+sub select_extra_fields
+{
+    my ($self, @names) = @_;
+
+    my @params;
+    my @joins;
+    my $x = 1;
+    for my $name (@names)
+    {
+        my $alias = $x == 1 ? "prf_preferences" : "prf_preferences_$x";
+        push @params, {
+            "$alias.name" => $name,
+        };
+        push @joins, 'prf_preferences';
+        $x++;
+    }
     $self->search({ -and => \@params }, {
         join => { prf_owner => \@joins }
     });

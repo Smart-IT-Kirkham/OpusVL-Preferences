@@ -35,7 +35,8 @@ __PACKAGE__->has_many
 	{
 		"foreign.prf_owner_id"      => "self.prf_owner_id",
 		"foreign.prf_owner_type_id" => "self.prf_owner_type_id",
-	},
+	}, 
+    { join_type => 'left' }
 );
 
 __PACKAGE__->belongs_to
