@@ -8,7 +8,6 @@ use Test::DBIx::Class
 {
     schema_class => 'OpusVL::Preferences::Schema',
 	traits       => 'Testpostgresql',
-    keep_db      => 1,
 }, 'TestOwner';
 
 my $rs = ResultSet ('TestOwner');
