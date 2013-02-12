@@ -96,15 +96,13 @@ sub select_extra_fields
     my $x = 1;
     for my $name (@names)
     {
-        my $alias = $x == 1 ? "prf_preferences" : "prf_preferences_$x";
-        push @params, {
-            "$alias.name" => $name,
-        };
-        push @joins, 'prf_preferences';
+        my $alias = $x == 1 ? "_by_name" : "_by_name_$x";
+        push @params, $name;
+        push @joins, '_by_name';
         $x++;
     }
     $self->search(undef, {
-        on => { -and => \@params },
+        bind => \@params,
         join => { prf_owner => \@joins },
     });
 }
