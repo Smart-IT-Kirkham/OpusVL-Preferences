@@ -60,6 +60,6 @@ ok my $test = TestOwner->join_by_name('test1');
 is $test->count, 1;
 
 ok my $s = TestOwner->select_extra_fields('test1', 'name');
-is $s->count, 1;
+is $s->{rs}->count, 1;
 
 done_testing;

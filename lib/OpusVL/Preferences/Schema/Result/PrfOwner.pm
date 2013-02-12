@@ -56,7 +56,7 @@ __PACKAGE__->has_many
             {
                 "$args->{foreign_alias}.prf_owner_id"      => { -ident => "$args->{self_alias}.prf_owner_id" },
                 "$args->{foreign_alias}.prf_owner_type_id" => { -ident => "$args->{self_alias}.prf_owner_type_id" },
-                "$args->{foreign_alias}.name"              => { -ident => "?" },
+                "$args->{foreign_alias}.name"              => \"= ?",
             }
         );
     },

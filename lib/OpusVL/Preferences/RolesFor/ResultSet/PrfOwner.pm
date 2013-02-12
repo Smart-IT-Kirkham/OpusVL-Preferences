@@ -94,17 +94,20 @@ sub select_extra_fields
     my @params;
     my @joins;
     my $x = 1;
+    my %aliases;
     for my $name (@names)
     {
         my $alias = $x == 1 ? "_by_name" : "_by_name_$x";
         push @params, $name;
         push @joins, '_by_name';
+        $aliases{$name} = $alias;
         $x++;
     }
-    $self->search(undef, {
+    my $rs = $self->search(undef, {
         bind => \@params,
         join => { prf_owner => \@joins },
     });
+    return { rs => $rs, aliases => \%aliases };
 }
 
 sub join_by_name
