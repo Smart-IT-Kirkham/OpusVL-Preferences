@@ -103,8 +103,19 @@ sub select_extra_fields
         push @joins, 'prf_preferences';
         $x++;
     }
-    $self->search({ -and => \@params }, {
-        join => { prf_owner => \@joins }
+    $self->search(undef, {
+        on => { -and => \@params },
+        join => { prf_owner => \@joins },
+    });
+}
+
+sub join_by_name
+{
+    my $self = shift;
+    my $name = shift;
+    $self->search(undef, {
+        join => [{ 'prf_owner' => '_by_name' }],
+        bind => [ $name ],
     });
 }
 

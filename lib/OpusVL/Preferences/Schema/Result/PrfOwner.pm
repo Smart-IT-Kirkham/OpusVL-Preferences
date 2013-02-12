@@ -47,6 +47,22 @@ __PACKAGE__->belongs_to
 	}
 );
 
+__PACKAGE__->has_many
+(
+    _by_name => 'OpusVL::Preferences::Schema::Result::PrfPreference',
+    sub {
+        my $args = shift;
+        return (
+            {
+                "$args->{foreign_alias}.prf_owner_id"      => { -ident => "$args->{self_alias}.prf_owner_id" },
+                "$args->{foreign_alias}.prf_owner_type_id" => { -ident => "$args->{self_alias}.prf_owner_type_id" },
+                "$args->{foreign_alias}.name"              => { -ident => "?" },
+            }
+        );
+    },
+);
+
+
 return 1;
 
 
