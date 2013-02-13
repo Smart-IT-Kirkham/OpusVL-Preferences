@@ -64,6 +64,12 @@ sub prf_defaults
 	return $type->prf_defaults;
 }
 
+sub prf_preferences
+{
+    my $self = shift;
+    return $self->search_related('prf_owner')->search_related('prf_preferences');
+}
+
 sub with_fields
 {
     my ($self, $args) = @_;
@@ -82,8 +88,41 @@ sub with_fields
         push @joins, 'prf_preferences';
         $x++;
     }
-    $self->search({ -and => \@params }, {
+    return $self->search({ -and => \@params }, {
         join => { prf_owner => \@joins }
+    });
+}
+
+sub select_extra_fields
+{
+    my ($self, @names) = @_;
+
+    my @params;
+    my @joins;
+    my $x = 1;
+    my %aliases;
+    for my $name (@names)
+    {
+        my $alias = $x == 1 ? "_by_name" : "_by_name_$x";
+        push @params, $name;
+        push @joins, '_by_name';
+        $aliases{$name} = $alias;
+        $x++;
+    }
+    my $rs = $self->search(undef, {
+        bind => \@params,
+        join => { prf_owner => \@joins },
+    });
+    return { rs => $rs, aliases => \%aliases };
+}
+
+sub join_by_name
+{
+    my $self = shift;
+    my $name = shift;
+    $self->search(undef, {
+        join => [{ 'prf_owner' => '_by_name' }],
+        bind => [ $name ],
     });
 }
 
@@ -168,6 +207,23 @@ out the hard relationship stuff for you.
 =head2 validate_extra_parameters
 
 =head2 validate_extra_parameter
+
+=head2 join_by_name
+
+Returns a resultset joined to the preferences with the name specified.
+
+    $rs->join_by_name('test');
+
+=head2 select_extra_fields
+
+Returns a resultset joined to the preferences with the names specified.
+Similar to join_by_name but it makes multiple joins for each name.
+
+    $rs->select_extra_fields('test', 'test2');
+
+=head2 prf_preferences
+
+Returns a resultset of all the preferences relating to this type of PrfOwner.
 
 =head1 ATTRIBUTES
 

@@ -35,7 +35,8 @@ __PACKAGE__->has_many
 	{
 		"foreign.prf_owner_id"      => "self.prf_owner_id",
 		"foreign.prf_owner_type_id" => "self.prf_owner_type_id",
-	},
+	}, 
+    { join_type => 'left' }
 );
 
 __PACKAGE__->belongs_to
@@ -45,6 +46,22 @@ __PACKAGE__->belongs_to
 		'foreign.prf_owner_type_id' => 'self.prf_owner_type_id'
 	}
 );
+
+__PACKAGE__->has_many
+(
+    _by_name => 'OpusVL::Preferences::Schema::Result::PrfPreference',
+    sub {
+        my $args = shift;
+        return (
+            {
+                "$args->{foreign_alias}.prf_owner_id"      => { -ident => "$args->{self_alias}.prf_owner_id" },
+                "$args->{foreign_alias}.prf_owner_type_id" => { -ident => "$args->{self_alias}.prf_owner_type_id" },
+                "$args->{foreign_alias}.name"              => \"= ?",
+            }
+        );
+    },
+);
+
 
 return 1;
 
