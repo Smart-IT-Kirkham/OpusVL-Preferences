@@ -61,6 +61,10 @@ OpusVL::Preferences::Schema::ResultSet::PrfDefault
 
 Returns the preferences in the display order.
 
+=head2 for_report
+
+Returns a resultset ordered and filtered for use on the transaction report.
+
 =head1 ATTRIBUTES
 
 
