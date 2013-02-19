@@ -35,6 +35,12 @@ sub display_order
     return $self->search(undef, { order_by => [ 'display_order' ] } );
 }
 
+sub for_report
+{
+    my $self = shift;
+    return $self->active->not_hidden->display_order;
+}
+
 return 1;
 
 =head1 NAME
