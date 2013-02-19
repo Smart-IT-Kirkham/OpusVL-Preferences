@@ -93,6 +93,11 @@ sub form_options
     return \@options;
 }
 
+sub hash_key
+{
+    my $self = shift;
+    return $self->name;
+}
 
 return 1;
 
@@ -126,6 +131,9 @@ OpusVL::Preferences::Schema::Result::PrfDefault
 
 =head2 hidden
 
+=head2 hash_key
+
+Returns a string convenient for use in hashes based on the parameter name.
 
 =head1 LICENSE AND COPYRIGHT
 
