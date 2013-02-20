@@ -72,6 +72,11 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+    ajax_validate => 
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
 
     display_order => 
     {
