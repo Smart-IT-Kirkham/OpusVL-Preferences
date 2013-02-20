@@ -60,6 +60,11 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+    display_on_search => 
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
     # note: this isn't stricly enforced by the module.
     # NOTE: might need to switch this to validator class
     unique_field => 

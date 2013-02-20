@@ -35,6 +35,18 @@ sub display_order
     return $self->search(undef, { order_by => [ 'display_order' ] } );
 }
 
+sub display_on_search
+{
+    my $self = shift;
+    return $self->search({ display_on_search => 1 });
+}
+
+sub for_search
+{
+    my $self = shift;
+    return $self->active->display_on_search->display_order;
+}
+
 sub for_report
 {
     my $self = shift;
@@ -56,6 +68,10 @@ OpusVL::Preferences::Schema::ResultSet::PrfDefault
 =head2 active_first
 
 =head2 not_hidden
+
+=head2 display_on_search
+
+=head2 for_search
 
 =head2 display_order
 
