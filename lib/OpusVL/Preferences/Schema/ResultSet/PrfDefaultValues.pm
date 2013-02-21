@@ -6,7 +6,7 @@ extends 'DBIx::Class::ResultSet';
 sub sorted
 {
     my $self = shift;
-    return $self->search(undef, { order_by => ['value'] });
+    return $self->search(undef, { order_by => ['display_order', 'value'] });
 }
 
 1;

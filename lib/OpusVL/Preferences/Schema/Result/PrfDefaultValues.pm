@@ -26,6 +26,12 @@ __PACKAGE__->add_columns(
 		data_type   => "varchar",
 		is_nullable => 0,
     },
+    display_order => 
+    {
+        data_type => 'int',
+        is_nullable => 0,
+        default_value => 1,
+    },
 );
 
 __PACKAGE__->set_primary_key("id");
