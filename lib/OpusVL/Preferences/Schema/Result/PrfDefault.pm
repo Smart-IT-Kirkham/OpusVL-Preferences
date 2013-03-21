@@ -84,6 +84,11 @@ __PACKAGE__->add_columns
         is_nullable => 0,
         default_value => 1,
     },
+    confirmation_required =>
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
 );
 
 __PACKAGE__->set_primary_key(qw/prf_owner_type_id name/);
