@@ -47,6 +47,8 @@ __PACKAGE__->add_columns
 
 __PACKAGE__->set_primary_key("prf_preference_id");
 
+__PACKAGE__->add_unique_constraint([ qw/prf_preference_id prf_owner_type_id name/ ]);
+
 __PACKAGE__->belongs_to
 (
 	prf_owner => 'OpusVL::Preferences::Schema::Result::PrfOwner',
@@ -55,6 +57,16 @@ __PACKAGE__->belongs_to
 		'foreign.prf_owner_type_id' => 'self.prf_owner_type_id'
 	}
 );
+
+__PACKAGE__->might_have(unique_value =>
+  "OpusVL::Preferences::Schema::Result::CustomDataUniqueValues",
+    { 
+      "foreign.prf_owner_type_id"   => "self.prf_owner_type_id", 
+      "foreign.name"                => "self.name", 
+      "foreign.value_id"            => "self.prf_preference_id" 
+    },
+  { is_foreign_key_constraint => 0, cascade_delete => 1 });
+
 
 return 1;
 

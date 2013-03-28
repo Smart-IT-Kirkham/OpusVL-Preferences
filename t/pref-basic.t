@@ -62,4 +62,32 @@ is $test->count, 1;
 ok my $s = TestOwner->select_extra_fields('test1', 'name');
 is $s->{rs}->count, 1;
 
+my $email_field = $defaults->create({
+    name => 'email',
+    data_type => 'email',
+    comment => 'Email',
+    default_value => '',
+    unique_field => 1,
+});
+
+$owner->prf_set('email', 'colin@opusvl.com');
+$owner->prf_get('email'), 'colin@opusvl.com';
+
+my $second = $rs->create ({ name => 'another' });
+throws_ok { $second->prf_set('email', 'colin@opusvl.com') } qr/duplicate key value violates unique constraint/i;
+ok ! $second->prf_get('email');
+
+$email_field->update({ unique_field => 0 });
+
+$second->prf_set('email', 'colin@opusvl.com');
+$second->prf_get('email'), 'colin@opusvl.com';
+
+throws_ok { $email_field->update({ unique_field => 1 })} qr/duplicate key value violates unique constraint/i;;
+
+$second->prf_reset('email');
+$email_field->discard_changes;
+$email_field->update({ unique_field => 1 });
+ok ! $second->prf_get('email');
+throws_ok { $second->prf_set('email', 'colin@opusvl.com') } qr/duplicate key value violates unique constraint/i;
+
 done_testing;

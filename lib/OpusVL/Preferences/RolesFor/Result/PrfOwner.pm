@@ -192,18 +192,48 @@ sub prf_set
 	my $allprefs = $self->prf_preferences;
 	
 	my $pref = $allprefs->search ({ name => $prefname })->first;
+	my $field = $self->prf_defaults->search ({ name => $prefname })->first;
 
 	if ($pref)
 	{
 		$pref->update ({ value => $value });
+
+        if($field->unique_field)
+        {
+            my $schema = $self->result_source->schema;
+            my $obj_rs = $schema->resultset($self->prf_owner_type->owner_resultset);
+            if($obj_rs->can('inactive_for_unique_params'))
+            {
+                my $rs = $obj_rs->inactive_for_unique_params;
+                $rs->search_related('prf_owner')->search_related('prf_preferences', 
+                   { 
+                       "prf_preferences.name" => $prefname, 
+                       "prf_preferences.prf_owner_type_id" => $field->prf_owner_type_id, 
+                   }
+                )->search_related('unique_value')->delete;
+            }
+            my $unique_val = $pref->unique_value;
+            if($unique_val)
+            {
+                $unique_val->value($value);
+            }
+            else
+            {
+                $pref->create_related('unique_value', { value => $value });
+            }
+        }
 	}
 	else
 	{
-		$allprefs->create
-		({
+        my $data = {
 			name  => $prefname,
 			value => $value
-		});
+		};
+        if($field->unique_field)
+        {
+            $data->{unique_value} = { value => $value };
+        }
+		$allprefs->create($data);
 	}
 }
 
@@ -212,7 +242,9 @@ sub prf_reset
 	my $self = shift;
 	my $name = shift;
 
-	$self->prf_preferences->search ({ name => $name })->delete;
+    my $val = $self->prf_preferences->search ({ 'me.name' => $name });
+    $val->search_related('unique_value')->delete;
+	$val->delete;
 }
 
 return 1;
