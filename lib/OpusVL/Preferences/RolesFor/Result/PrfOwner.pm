@@ -183,6 +183,26 @@ sub prf_get
 	return;
 }
 
+sub _clear_out_inactive_unique_values
+{
+    my $self = shift;
+    my $prefname = shift;
+    my $field = shift;
+
+    my $schema = $self->result_source->schema;
+    my $obj_rs = $schema->resultset($self->prf_owner_type->owner_resultset);
+    if($obj_rs->can('inactive_for_unique_params'))
+    {
+        my $rs = $obj_rs->inactive_for_unique_params;
+        $rs->search_related('prf_owner')->search_related('prf_preferences', 
+           { 
+               "prf_preferences.name" => $prefname, 
+               "prf_preferences.prf_owner_type_id" => $field->prf_owner_type_id, 
+           }
+        )->search_related('unique_value')->delete;
+    }
+}
+
 sub prf_set
 {
 	my $self     = shift;
@@ -200,18 +220,7 @@ sub prf_set
 
         if($field->unique_field)
         {
-            my $schema = $self->result_source->schema;
-            my $obj_rs = $schema->resultset($self->prf_owner_type->owner_resultset);
-            if($obj_rs->can('inactive_for_unique_params'))
-            {
-                my $rs = $obj_rs->inactive_for_unique_params;
-                $rs->search_related('prf_owner')->search_related('prf_preferences', 
-                   { 
-                       "prf_preferences.name" => $prefname, 
-                       "prf_preferences.prf_owner_type_id" => $field->prf_owner_type_id, 
-                   }
-                )->search_related('unique_value')->delete;
-            }
+            $self->_clear_out_inactive_unique_values($prefname, $field);
             my $unique_val = $pref->unique_value;
             if($unique_val)
             {
@@ -231,6 +240,7 @@ sub prf_set
 		};
         if($field->unique_field)
         {
+            $self->_clear_out_inactive_unique_values($prefname, $field);
             $data->{unique_value} = { value => $value };
         }
 		$allprefs->create($data);

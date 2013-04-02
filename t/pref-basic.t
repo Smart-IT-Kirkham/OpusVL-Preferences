@@ -71,7 +71,7 @@ my $email_field = $defaults->create({
 });
 
 $owner->prf_set('email', 'colin@opusvl.com');
-$owner->prf_get('email'), 'colin@opusvl.com';
+is $owner->prf_get('email'), 'colin@opusvl.com';
 
 my $second = $rs->create ({ name => 'another' });
 throws_ok { $second->prf_set('email', 'colin@opusvl.com') } qr/duplicate key value violates unique constraint/i;
@@ -80,7 +80,7 @@ ok ! $second->prf_get('email');
 $email_field->update({ unique_field => 0 });
 
 $second->prf_set('email', 'colin@opusvl.com');
-$second->prf_get('email'), 'colin@opusvl.com';
+is $second->prf_get('email'), 'colin@opusvl.com';
 
 throws_ok { $email_field->update({ unique_field => 1 })} qr/duplicate key value violates unique constraint/i;;
 
