@@ -32,7 +32,7 @@ sub not_hidden
 sub display_order
 {
     my $self = shift;
-    return $self->search(undef, { order_by => [ 'display_order' ] } );
+    return $self->search(undef, { order_by => [ 'display_order', 'name' ] } );
 }
 
 sub display_on_search
