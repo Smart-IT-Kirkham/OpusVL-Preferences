@@ -224,7 +224,12 @@ sub prf_set
             my $unique_val = $pref->unique_value;
             if($unique_val)
             {
-                $unique_val->value($value);
+                my $place_holder = $value;
+                if($field->data_type eq 'email')
+                {
+                    $place_holder = lc $value; 
+                }
+                $unique_val->value($place_holder);
             }
             else
             {
@@ -241,7 +246,12 @@ sub prf_set
         if($field->unique_field)
         {
             $self->_clear_out_inactive_unique_values($prefname, $field);
-            $data->{unique_value} = { value => $value };
+            my $place_holder = $value;
+            if($field->data_type eq 'email')
+            {
+                $place_holder = lc $value; 
+            }
+            $data->{unique_value} = { value => $place_holder };
         }
 		$allprefs->create($data);
 	}
