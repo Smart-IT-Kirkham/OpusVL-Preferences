@@ -60,6 +60,12 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+
+    audit => {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
+
     display_on_search => 
     {
         data_type => 'boolean',
