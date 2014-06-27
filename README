@@ -2,7 +2,7 @@ NAME
     OpusVL::Preferences - Generic DBIC preferences module
 
 VERSION
-    Version 0.01
+    Version 0.10
 
 SYNOPSIS
     This is a really simple module to pull into result classes so you can
