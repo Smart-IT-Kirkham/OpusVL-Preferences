@@ -230,6 +230,7 @@ sub prf_set
                     $place_holder = lc $value; 
                 }
                 $unique_val->value($place_holder);
+                $unique_val->update;
             }
             else
             {
