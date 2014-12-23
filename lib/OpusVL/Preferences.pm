@@ -9,11 +9,11 @@ OpusVL::Preferences - Generic DBIC preferences module
 
 =head1 VERSION
 
-Version 0.11
+Version 0.12
 
 =cut
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 
 =head1 SYNOPSIS
