@@ -75,6 +75,17 @@ use strict;
 use warnings;
 use Moose::Role;
 
+=head2 prf_id_column
+
+Provides the default column that contains the preferences identifier.
+
+If your Result doesn't have a standard integer primary key called 'id', override
+this with the name of another column that I<is> an identifying integer
+
+=cut
+
+sub prf_id_column {'id'}
+
 sub prf_owner_init
 {
 	my $class = shift;
@@ -93,7 +104,7 @@ sub prf_owner_init
 	(
 		prf_owner => 'OpusVL::Preferences::Schema::Result::PrfOwner',
 		{
-			'foreign.prf_owner_id'      => 'self.id',
+			'foreign.prf_owner_id'      => 'self.' . $class->prf_id_column,
 			'foreign.prf_owner_type_id' => 'self.prf_owner_type_id'
 		}
 	);
@@ -113,9 +124,13 @@ after insert => sub
 	my $schema = $self->result_source->schema;
 	my $type   = $schema->resultset ('PrfOwnerType')->setup_from_source ($self->result_source);
 
-	$schema->resultset ('PrfOwner')->create
+	# Ensure that any auto-generated values have been populated (in case the
+	# prf_id column is not a primary key)
+	$self->discard_changes;
+	my $prf_id_column = $self->prf_id_column;
+	$schema->resultset('PrfOwner')->create
 	({
-		prf_owner_id      => $self->id,
+		prf_owner_id      => $self->$prf_id_column,
 		prf_owner_type_id => $type->prf_owner_type_id
 	});
 	
