@@ -6,7 +6,7 @@ all_from 'lib/OpusVL/Preferences.pm';
 requires 'DBIx::Class';
 requires 'MooseX::NonMoose';
 
-build_requires 'Test::More';
+build_requires 'Test::Most';
 
 resources (
     repository => {
