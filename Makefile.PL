@@ -7,6 +7,7 @@ requires 'DBIx::Class';
 requires 'MooseX::NonMoose';
 
 build_requires 'Test::Most';
+build_requires 'Test::DBIx::Class';
 
 resources (
     repository => {
