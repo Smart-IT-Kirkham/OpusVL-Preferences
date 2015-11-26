@@ -116,6 +116,38 @@ sub select_extra_fields
     return { rs => $rs, aliases => \%aliases };
 }
 
+sub prefetch_extra_fields
+{
+    my ($self, @names) = @_;
+
+    my @params;
+    my @joins;
+    my $x = 1;
+    my %aliases;
+    my @columns;
+    for my $name (@names)
+    {
+        my $alias = $x == 1 ? "_by_name" : "_by_name_$x";
+        push @params, $name;
+        push @columns, { "extra_$name" => "$alias.value" };
+        push @joins, '_by_name';
+        $aliases{$name} = $alias;
+        $x++;
+    }
+    my $rs = $self->search(undef, {
+        bind => \@params,
+        # Doing this manually since prefetch tries to be too clever
+        # by collapsing stuff and then providing no way to get to the dat
+        # as it doesn't consider multiple joins of the same relationship
+        # to be sane.
+        # Also our data should be flat (there should only be 1 or 0 row we're joining to
+        # so we don't need to do that collapse business.
+        join => { prf_owner => \@joins },
+        '+columns' => \@columns,
+    });
+    return { rs => $rs, aliases => \%aliases };
+}
+
 sub join_by_name
 {
     my $self = shift;
@@ -219,7 +251,25 @@ Returns a resultset joined to the preferences with the name specified.
 Returns a resultset joined to the preferences with the names specified.
 Similar to join_by_name but it makes multiple joins for each name.
 
-    $rs->select_extra_fields('test', 'test2');
+It returns the new resultset and a list of the field -> aliases so that
+you can then do whatever you want with them.
+
+    my $info = $rs->select_extra_fields('test', 'test2');
+    my $new_rs = $info->{rs};
+    my $aliases = $info->{aliases};
+
+=head2 prefetch_extra_fields
+
+Select the extra fields when searching the resultset.
+It select's them as C<extra_$fieldname>.  These values are
+accessible via C<get_column>
+
+It returns a hashref like L<select_extra_fields> with rs and an alias map.
+
+    my $info = $rs->prefetch_extra_fields('field1', 'field2');
+    my $new_rs = $info->{rs};
+    my @all = $new_rs->all;
+    my $field1 = $all[0]->get_column('extra_field1');
 
 =head2 prf_preferences
 

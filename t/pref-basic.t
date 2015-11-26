@@ -61,6 +61,8 @@ is $test->count, 1;
 
 ok my $s = TestOwner->select_extra_fields('test1', 'name');
 is $s->{rs}->count, 1;
+ok my $s2 = TestOwner->prefetch_extra_fields('test1', 'name');
+is $s->{rs}->count, 1;
 
 my $email_field = $defaults->create({
     name => 'email',
