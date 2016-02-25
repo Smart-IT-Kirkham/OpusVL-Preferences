@@ -2,6 +2,7 @@ use inc::Module::Install;
 
 name     'OpusVL-Preferences';
 all_from 'lib/OpusVL/Preferences.pm';
+license  'perl';
 
 requires 'DBIx::Class';
 requires 'MooseX::NonMoose';
