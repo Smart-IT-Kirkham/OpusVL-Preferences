@@ -119,10 +119,6 @@ might be in the initdb routine:
 To be completed. Will allow an Employee resultset to be return using
 preferences as a search parameter.
 
-=head1 AUTHOR
-
-Rich Doughty, C<< <rich at opusvl.com> >>
-
 =head1 BUGS
 
 None. Past, present and future.
