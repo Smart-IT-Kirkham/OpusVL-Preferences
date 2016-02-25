@@ -2,6 +2,9 @@ Revision history for OpusVL-Preferences
 
 {{ $NEXT }}
 
+0.18      2016-02-25 16:09:28+00:00 Europe/London
+        Converted to Dist::Zilla and prepared for public release.
+
 0.01    2012-11-29
         First version, released on an unsuspecting world.
 
