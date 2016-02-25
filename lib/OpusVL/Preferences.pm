@@ -133,14 +133,6 @@ You can find documentation for this module with the perldoc command.
 
     perldoc OpusVL::Preferences
 
-=head1 ACKNOWLEDGEMENTS
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2011 Opus Vision Limited.
-
-This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
-
 If you require assistance, support, or further development of this software, please contact OpusVL using the details below:
 
 =over 4
@@ -158,6 +150,8 @@ Email: community@opusvl.com
 Web: L<http://opusvl.com>
 
 =back
+
+=head1 ACKNOWLEDGEMENTS
 
 =cut
 
