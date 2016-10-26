@@ -91,5 +91,6 @@ $email_field->discard_changes;
 $email_field->update({ unique_field => 1 });
 ok ! $second->prf_get('email');
 throws_ok { $second->prf_set('email', 'colin@opusvl.com') } qr/unique_vals/i;
+throws_ok { $second->prf_set('not_there', 'colin@opusvl.com') } qr/Field not_there not setup/i;
 
 done_testing;
