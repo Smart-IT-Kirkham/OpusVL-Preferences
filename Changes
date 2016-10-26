@@ -2,6 +2,10 @@ Revision history for OpusVL-Preferences
 
 {{ $NEXT }}
 
+0.22      2016-10-26 10:08:43+01:00 Europe/London
+
+  * Provide a clearer error message when a field wasn't setup.
+
 0.21      2016-02-26 08:53:20+00:00 Europe/London
 
   * Fixed RT 112429, test failures on non english locales.
