@@ -228,6 +228,10 @@ sub prf_set
 	
 	my $pref = $allprefs->search ({ name => $prefname })->first;
 	my $field = $self->prf_defaults->search ({ name => $prefname })->first;
+	unless($field)
+	{
+		die "Field $field not setup.";
+	}
 
 	if ($pref)
 	{
