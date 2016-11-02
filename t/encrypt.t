@@ -42,7 +42,7 @@ ok my $results = TestOwner->with_fields({
 is $results->count, 1;
 
 # but partial searches should fail.
-ok my $results = TestOwner->with_fields({
+ok $results = TestOwner->with_fields({
     email => { -ilike => '%@opusvl.com' },
 });
 is $results->count, 0, 'Partial searches should fail on encrypted fields';

@@ -222,6 +222,34 @@ OpusVL::Preferences::Schema::Result::PrfDefault
 
 Returns a string convenient for use in hashes based on the parameter name.
 
+=head2 encrypted
+
+A flag indicating if the field is encrypted.  This requires the symmetric encryption 
+keys to be setup on the Schema object.
+
+Note that methods like C<prefetch_extra_fields> and C<select_extra_fields> will return
+the value encrypted and you will need to decrypt the values yourself.
+
+This can be done like this,
+
+    $schema->crypto->decrypt($r->value);
+
+Searches using with_fields will work if the field has either of the
+properties, C<display_on_search> or C<unique_field> set.  They will switch
+the encryption to use a deterministic mode which will allow searches of full
+values to work.  Partial value searching will not.
+
+If you're searching the dataset manually you will need to encrypt your search
+term with the C<encrypt_deterministic> function.
+
+    $schema->crypto->encrypt_deterministic($val);
+
+The prf_get and prf_set functions will deal with the encryption seamlessly.
+
+Changing this flag on an existing dataset, or the other flags will not cause
+any data to be encrypted or decrypted.  You will need to do that sort of 
+maintenance manually.
+
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2012 OpusVL.
