@@ -95,7 +95,14 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+    encrypted => 
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
+
 );
+
 
 __PACKAGE__->set_primary_key(qw/prf_owner_type_id name/);
 __PACKAGE__->has_many
@@ -137,6 +144,8 @@ sub hash_key
     my $self = shift;
     return $self->name;
 }
+
+# FIXME: deal with encryption.
 
 around update => sub {
     my $orig = shift;

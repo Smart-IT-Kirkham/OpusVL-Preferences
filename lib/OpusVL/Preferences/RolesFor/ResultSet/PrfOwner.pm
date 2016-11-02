@@ -4,6 +4,7 @@ package OpusVL::Preferences::RolesFor::ResultSet::PrfOwner;
 use strict;
 use warnings;
 use Moose::Role;
+use Carp;
 
 sub prf_get_default
 {
@@ -77,6 +78,33 @@ sub with_fields
     my @params;
     my @joins;
     my $x = 1;
+    # well this sucks, we need to figure out if these are encrypted fields.
+    # we can't do this entirely at the DB layer.
+    my $schema = $self->result_source->schema;
+    my $crypto = $schema->encryption_client;
+    if($crypto)
+    {
+        # no point in checking for encryption unless we have a crypto object setup.
+        my $fields = $self->prf_defaults->search({ 
+            name => { -in => [keys %$args] }, 
+            encrypted => 1,
+        });
+        for my $f ($fields->all)
+        {
+            # encrypt the values.
+            # since this is a search do it deterministicly
+            # this won't find values for fields that weren't encrypted deterministicly
+            # but we can't find them anyway, so this will effectively fail closed.
+            # which is about as good as it gets.
+            # we could emit a warning when they try to search one of those fields though.
+            unless($f->unique_field || $f->display_on_search)
+            {
+                my $name = $f->name;
+                carp "Field $name is being searched for but it's not deterministic";
+            }
+            $self->encrypt_query_values($crypto, $args, $f->name);
+        }
+    }
     for my $name (keys %$args)
     {
         my $alias = $x == 1 ? "prf_preferences" : "prf_preferences_$x";
@@ -198,6 +226,59 @@ sub validate_extra_parameters
     {
         my $error = $self->validate_extra_parameter($field, $params, $unique_validator, $id);
         return $error if $error;
+    }
+}
+
+sub encrypt_query_values
+{
+    my $self = shift;
+    my $crypto = shift;
+    my $hash = shift;
+    my $new_key = shift;
+    my $val = $hash->{$new_key};
+
+    if(ref $val eq 'HASH')
+    {
+        my @ops = keys %$val;
+        for my $op (@ops)
+        {
+            if($op =~ /-?ident/)
+            {
+                # skip this.
+                return;
+            }
+            if(ref $val->{$op} eq 'ARRAY')
+            {
+                my @encrypted = map { 
+                    $crypto->encrypt_deterministic($_) 
+                } @{$val->{$op}};
+                $val->{$op} = \@encrypted;
+            }
+            elsif(ref $val->{$op} eq 'HASHREF')
+            {
+                # I have no idea what to do with this.
+                # going to stop here.
+                carp 'Unrecognised search query, not encrypting possible reference to token number';
+            }
+            elsif(!ref $val->{$op})
+            {
+                # convert what we assume is a single value.
+                my $value = $val->{$op};
+                if($op =~ /like/i)
+                {
+                    # NOTE:
+                    # this could cause some fun and games.
+                    $value =~ s/[%?]//g;
+                }
+                my $enc = $crypto->encrypt_deterministic($value);
+                $val->{$op} = $enc;
+            }
+        }
+    }
+    else
+    {
+        my $new_value = $crypto->encrypt_deterministic($val);
+        $hash->{$new_key} = $new_value;
     }
 }
 

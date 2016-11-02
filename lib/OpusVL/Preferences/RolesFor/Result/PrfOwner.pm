@@ -185,13 +185,28 @@ sub prf_get
 {
 	my $self = shift;
 	my $name = shift;
-	my $pref = $self->prf_preferences->search ({ name => $name })->first;
-
-	return $pref->value
-		if defined $pref;
 
 	my $default = $self->prf_defaults->search ({ name => $name })->first;
+    die "Field $name not setup" unless $default;
 
+	my $pref = $self->prf_preferences->search ({ name => $name })->first;
+    my $value = $pref->value;
+    if($default->encrypted)
+    {
+        if($pref)
+        {
+            my $schema = $self->result_source->schema;
+            my $crypto = $schema->encryption_client;
+            if($crypto)
+            {
+                $value = $crypto->decrypt($value);
+            }
+        }
+    }
+    return $value if defined $value;
+
+    # FIXME: should probably look at encrypting defaults,
+    # although, then again, do we need to?
 	return $default->default_value
 		if defined $default;
 
@@ -233,6 +248,27 @@ sub prf_set
 		die "Field $prefname not setup.";
 	}
 
+    if($field->encrypted)
+    {
+        my $schema = $self->result_source->schema;
+        my $crypto = $schema->encryption_client;
+
+        # if we need to search or ensure unique values,
+        # then we have to use deterministic encryption
+        # which is less secure, but still encrypted.
+
+        if($crypto)
+        {
+            if($field->unique_field || $field->display_on_search)
+            {
+                $value = $crypto->encrypt_deterministic($value);
+            }
+            else
+            {
+                $value = $crypto->encrypt($value);
+            }
+        }
+    }
 	if ($pref)
 	{
 		$pref->update ({ value => $value });
