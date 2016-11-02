@@ -190,7 +190,8 @@ sub prf_get
     die "Field $name not setup" unless $default;
 
 	my $pref = $self->prf_preferences->search ({ name => $name })->first;
-    my $value = $pref->value;
+    my $value;
+    $value = $pref->value if $pref;
     if($default->encrypted)
     {
         if($pref)

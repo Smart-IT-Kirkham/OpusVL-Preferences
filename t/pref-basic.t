@@ -24,7 +24,7 @@ $defaults->populate
 
 my $owner = $rs->create ({ name => 'test' });
 
-ok !defined $owner->prf_get ('blah')   => 'Non existant preference';
+throws_ok { $owner->prf_get('blah') } qr/Field blah not setup/i, 'Check non existant field access throws an error';
 is $owner->prf_get ('test1'), '111'    => 'Preference uses the default';
 
 $owner->prf_set ('test1' => '222');
