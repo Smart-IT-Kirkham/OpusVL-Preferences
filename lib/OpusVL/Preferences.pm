@@ -3,15 +3,7 @@ package OpusVL::Preferences;
 use warnings;
 use strict;
 
-=head1 NAME
-
-OpusVL::Preferences - Generic DBIC preferences module
-
-=head1 VERSION
-
-Version 0.18
-
-=cut
+# ABSTRACT: Generic DBIC preferences module
 
 our $VERSION = '0.23';
 
