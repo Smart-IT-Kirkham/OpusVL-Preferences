@@ -61,10 +61,6 @@ __PACKAGE__->has_many
 return 1;
 
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::Result::PrfOwnerType
-
 =head1 DESCRIPTION
 
 =head1 METHODS

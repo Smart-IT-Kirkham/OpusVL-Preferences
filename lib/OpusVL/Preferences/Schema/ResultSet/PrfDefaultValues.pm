@@ -11,10 +11,6 @@ sub sorted
 
 1;
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::ResultSet::PrfDefaultValues
-
 =head1 DESCRIPTION
 
 =head1 METHODS

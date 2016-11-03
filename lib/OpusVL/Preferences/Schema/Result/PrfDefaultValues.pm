@@ -51,10 +51,6 @@ __PACKAGE__->meta->make_immutable();
 
 
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::Result::PrfDefaultValues
-
 =head1 DESCRIPTION
 
 =head1 METHODS

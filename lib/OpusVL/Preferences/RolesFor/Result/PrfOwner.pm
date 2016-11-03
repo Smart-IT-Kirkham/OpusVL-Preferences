@@ -1,10 +1,6 @@
 
 package OpusVL::Preferences::RolesFor::Result::PrfOwner;
 
-=head1 NAME 
-
-OpusVL::Preferences::RolesFor::Result::PrfOwner
-
 =head1 DESCRIPTION
 
 If you are using DBIx::Class::Schema::Loader add the necessary link fields manually, otherwise 

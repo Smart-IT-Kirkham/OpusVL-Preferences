@@ -55,10 +55,6 @@ __PACKAGE__->belongs_to(parent_value =>
 
 1;
 
-=head1 NAME
-
-OpusVL::CustomParameters::Schema::Result::CustomDataUniqueValues
-
 =head1 DESCRIPTION
 
 =head1 METHODS

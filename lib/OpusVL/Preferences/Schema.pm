@@ -1,10 +1,6 @@
 
 package OpusVL::Preferences::Schema;
 
-=head1 NAME
-
-OpusVL::Preferences::Schema
-
 =head1 SYNOPSIS
 
 This is the DBIx::Class schema for the Preferences module.

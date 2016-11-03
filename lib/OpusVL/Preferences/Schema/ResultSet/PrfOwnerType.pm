@@ -47,10 +47,6 @@ sub get_from_source
 return 1;
 
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::ResultSet::PrfOwnerType
-
 =head1 DESCRIPTION
 
 =head1 METHODS

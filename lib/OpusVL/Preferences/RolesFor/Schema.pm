@@ -1,9 +1,5 @@
 package OpusVL::Preferences::RolesFor::Schema;
 
-=head1 NAME
-
-OpusVL::Preferences::RolesFor::Schema
-
 =head1 SYNOPSIS
 
 This allows for our preferences to be inserted into an existing schema and make use of the existing

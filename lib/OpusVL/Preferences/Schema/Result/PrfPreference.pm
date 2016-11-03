@@ -71,10 +71,6 @@ __PACKAGE__->might_have(unique_value =>
 return 1;
 
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::Result::PrfPreference
-
 =head1 DESCRIPTION
 
 =head1 METHODS

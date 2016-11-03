@@ -286,10 +286,6 @@ sub _encrypt_query_values
 return 1;
 
 
-=head1 NAME
-
-OpusVL::Preferences::RolesFor::ResultSet::PrfOwner
-
 =head1 DESCRIPTION
 
 =head1 METHODS

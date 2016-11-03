@@ -55,10 +55,6 @@ sub for_report
 
 return 1;
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::ResultSet::PrfDefault
-
 =head1 DESCRIPTION
 
 =head1 METHODS

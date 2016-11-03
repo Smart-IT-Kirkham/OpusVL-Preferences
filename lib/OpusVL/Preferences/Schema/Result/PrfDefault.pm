@@ -188,10 +188,6 @@ around update => sub {
 };
 return 1;
 
-=head1 NAME
-
-OpusVL::Preferences::Schema::Result::PrfDefault
-
 =head1 DESCRIPTION
 
 =head1 METHODS
