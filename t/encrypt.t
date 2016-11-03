@@ -19,12 +19,13 @@ my $fields = TestOwner->prf_defaults;
 ok $fields->create({ 
     name => 'pin',
     encrypted => 1,
+    searchable => 0,
     default_value => '',
 });
 ok $fields->create({ 
     name => 'email',
     encrypted => 1,
-    display_on_search => 1,
+    searchable => 1,
     default_value => '',
 });
 ok my $o = TestOwner->create({ name => 'test' });

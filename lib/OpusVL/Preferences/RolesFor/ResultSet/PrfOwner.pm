@@ -97,10 +97,10 @@ sub with_fields
             # but we can't find them anyway, so this will effectively fail closed.
             # which is about as good as it gets.
             # we could emit a warning when they try to search one of those fields though.
-            unless($f->unique_field || $f->display_on_search)
+            unless($f->unique_field || $f->searchable)
             {
                 my $name = $f->name;
-                carp "Field $name is being searched for it's encrypted and does not have the display_on_search flag set so we will probably not find any results.";
+                carp "Field $name is being searched for it's encrypted and does not have the searchable flag set so we will probably not find any results.";
             }
             $self->_encrypt_query_values($crypto, $args, $f->name);
         }

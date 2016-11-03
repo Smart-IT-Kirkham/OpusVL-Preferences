@@ -41,10 +41,22 @@ sub display_on_search
     return $self->search({ display_on_search => 1 });
 }
 
+sub searchable
+{
+    my $self = shift;
+    return $self->search({ searchable => 1 });
+}
+
 sub for_search
 {
     my $self = shift;
     return $self->active->display_on_search->display_order;
+}
+
+sub for_search_criteria
+{
+    my $self = shift;
+    return $self->active->searchable->display_order;
 }
 
 sub for_report
@@ -69,6 +81,10 @@ return 1;
 
 =head2 for_search
 
+=head2 searchable
+
+=head2 for_search_criteria
+
 =head2 display_order
 
 Returns the preferences in the display order.
@@ -79,11 +95,5 @@ Returns a resultset ordered and filtered for use on the transaction report.
 
 =head1 ATTRIBUTES
 
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2012 OpusVL.
-
-This software is licensed according to the "IP Assignment Schedule" provided with the development project.
 
 =cut

@@ -256,7 +256,7 @@ sub prf_set
 
         if($crypto)
         {
-            if($field->unique_field || $field->display_on_search)
+            if($field->unique_field || $field->searchable)
             {
                 $value = $crypto->encrypt_deterministic($value);
             }

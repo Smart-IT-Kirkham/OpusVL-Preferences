@@ -71,6 +71,12 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+    searchable =>
+    {
+        data_type => 'boolean',
+        default_value => 1,
+        is_nullable => 0,
+    },
     # note: this isn't stricly enforced by the module.
     # NOTE: might need to switch this to validator class
     unique_field => 
@@ -211,7 +217,7 @@ sub encryption_routine
         my $crypto = $schema->encryption_client;
         if($crypto)
         {
-            if($self->unique_value || $self->display_on_search)
+            if($self->unique_value || $self->searchable)
             {
                 return sub { return $crypto->decrypt(shift) };
             }
@@ -265,7 +271,7 @@ This can be done like this,
     $schema->crypto->decrypt($r->value);
 
 Searches using with_fields will work if the field has either of the
-properties, C<display_on_search> or C<unique_field> set.  They will switch
+properties, C<searchable> or C<unique_field> set.  They will switch
 the encryption to use a deterministic mode which will allow searches of full
 values to work.  Partial value searching will not.
 
@@ -289,11 +295,5 @@ not turned on or configured this will simply return the raw value.
 
 Returns a subref with code to encrypt a value for storage.  If encryption is
 not turned on or configured this will simply return the raw value.
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2012 OpusVL.
-
-This software is licensed according to the "IP Assignment Schedule" provided with the development project.
 
 =cut
