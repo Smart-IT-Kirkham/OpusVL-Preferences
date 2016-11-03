@@ -5,15 +5,26 @@ package OpusVL::Preferences::Schema;
 
 This is the DBIx::Class schema for the Preferences module.
 
-=head1 AUTHOR
+=head1 ATTRIBUTES
 
-OpusVL, C<< <rich at opusvl.com> >>
+=head2 encryption_key
 
-=head1 LICENSE AND COPYRIGHT
+An Encryption key to use for symmetric cryptography of selected fields.
 
-Copyright 2011 OpusVL.
+This will be used in the L<OpusVL::SimpleCrypto> module, see that for
+how to generate keys.
 
-This software is licensed according to the "IP Assignment Schedule" provided with the development project.
+=head2 encryption_salt
+
+A salt to use for symmetric cryptography of selected fields.
+
+This will be used in the L<OpusVL::SimpleCrypto> module, see that for
+how to generate keys and salt.
+
+=head2 encryption_client
+
+The client to perform encryption.  If the key or salt are not provided
+this will return undef.
 
 =cut
 
