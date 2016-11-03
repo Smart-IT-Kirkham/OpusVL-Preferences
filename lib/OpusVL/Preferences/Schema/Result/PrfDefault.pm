@@ -186,6 +186,40 @@ around update => sub {
     }
     $txn->commit;
 };
+
+sub decryption_routine
+{
+    my $self = shift;
+    if($self->encrypted)
+    {
+        my $schema = $self->result_source->schema;
+        my $crypto = $schema->encryption_client;
+        if($crypto)
+        {
+            return sub { return $crypto->decrypt(shift) };
+        }
+    }
+    return sub { shift; };
+}
+
+sub encryption_routine
+{
+    my $self = shift;
+    if($self->encrypted)
+    {
+        my $schema = $self->result_source->schema;
+        my $crypto = $schema->encryption_client;
+        if($crypto)
+        {
+            if($self->unique_value || $self->display_on_search)
+            {
+                return sub { return $crypto->decrypt(shift) };
+            }
+        }
+    }
+    return sub { shift; };
+}
+
 return 1;
 
 =head1 DESCRIPTION
@@ -245,6 +279,16 @@ The prf_get and prf_set functions will deal with the encryption seamlessly.
 Changing this flag on an existing dataset, or the other flags will not cause
 any data to be encrypted or decrypted.  You will need to do that sort of 
 maintenance manually.
+
+=head2 decryption_routine
+
+Returns a subref with code to decrypt a value for storage.  If encryption is
+not turned on or configured this will simply return the raw value.
+
+=head2 encryption_routine
+
+Returns a subref with code to encrypt a value for storage.  If encryption is
+not turned on or configured this will simply return the raw value.
 
 =head1 LICENSE AND COPYRIGHT
 
