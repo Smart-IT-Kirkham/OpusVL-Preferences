@@ -10,6 +10,7 @@ requires "strict" => "0";
 requires "warnings" => "0";
 
 requires 'OpusVL::SimpleCrypto' => 0;
+requires 'OpusVL::Text::Util' => 0;
 
 on 'test' => sub {
   requires "ExtUtils::MakeMaker" => "0";

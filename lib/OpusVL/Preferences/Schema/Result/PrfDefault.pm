@@ -6,6 +6,7 @@ use warnings;
 use Moose;
 use MooseX::NonMoose;
 use namespace::autoclean;
+use OpusVL::Text::Util qw/mask_text/;
 
 extends 'DBIx::Class::Core';
 
@@ -107,6 +108,18 @@ __PACKAGE__->add_columns
         is_nullable => 1,
     },
 
+	display_mask =>
+	{
+		data_type   => 'varchar',
+		is_nullable => 0,
+        default_value => '(.*)',
+	},
+	mask_char =>
+	{
+		data_type   => 'varchar',
+		is_nullable => 0,
+        default_value => '*',
+	},
 );
 
 
@@ -226,6 +239,15 @@ sub encryption_routine
     return sub { shift; };
 }
 
+sub mask_function
+{
+    my $self = shift;
+    return sub {
+        my $val = shift;
+        return mask_text($self->mask_char, $self->display_mask, $val);
+    };
+}
+
 return 1;
 
 =head1 DESCRIPTION
@@ -295,5 +317,33 @@ not turned on or configured this will simply return the raw value.
 
 Returns a subref with code to encrypt a value for storage.  If encryption is
 not turned on or configured this will simply return the raw value.
+
+=head2 display_mask
+
+Display mask for sensitive fields.  A regex specifying which characters to display
+and which to mask out.  Use captures to identify the characters to display, the rest
+will be masked out.
+
+For instance, '(\d{3}).*(\d{4})' will display the first 3 digits, and the last 4.
+
+Note that if the regex does not match at all it will blank out the whole string.
+
+The default is set to (.*) which means no characters are hidden out of the box.
+
+Note that this won't save you from security bugs in your own code, only leaks
+of valid outputs from your programs.
+
+=head2 mask_char
+
+Character to use when masking out sensitive data.
+
+Defaults to *
+
+=head2 mask_function
+
+Provides a subref that will mask values of this field.
+
+    my $mask = $field->mask_function;
+    $mask->($value->value);
 
 =cut

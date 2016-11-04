@@ -93,4 +93,10 @@ ok ! $second->prf_get('email');
 throws_ok { $second->prf_set('email', 'colin@opusvl.com') } qr/unique_vals/i;
 throws_ok { $second->prf_set('not_there', 'colin@opusvl.com') } qr/Field not_there not setup/i;
 
+is $email_field->mask_function->('rabbits'), 'rabbits';
+$email_field->display_mask('(\d{3}).*(\d{4})');
+$email_field->update;
+is $email_field->mask_function->('rabbits'), '*******';
+is $email_field->mask_function->('1234567890123'), '123******0123';
+
 done_testing;
