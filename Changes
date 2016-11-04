@@ -2,6 +2,15 @@ Revision history for OpusVL-Preferences
 
 {{ $NEXT }}
 
+0.23      2016-11-04 12:01:59+00:00 Europe/London
+
+  * Added field mask function
+  * Added new searchable flag to indicate that it makes sense to search on a field.
+  * Pod tweaks
+  * Added helper methods for getting an encryption/decryption sub
+  * Updated behaviour to throwing an error when the field prf_get tries to get doesn't exist
+  * Added support for basic symmetric crypto on values.
+
 0.22      2016-10-26 10:08:43+01:00 Europe/London
 
   * Provide a clearer error message when a field wasn't setup.
