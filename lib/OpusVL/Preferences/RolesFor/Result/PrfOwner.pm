@@ -155,13 +155,19 @@ sub preferences_to_array
     my $self = shift;
 
     my $preferences = $self->prf_preferences;
+    my @expanded;
+    for my $pref ($preferences->all)
+    {
+        my $param = $self->prf_defaults->find({ name => $pref->name });
+        push @expanded, {
+            name => $pref->name, 
+            value => $param->decryption_routine->($pref->value),
+            param => $param,
+        };
+    }
     my @d = sort { 
         $a->{param}->display_order <=> $b->{param}->display_order 
-    } map { { 
-        name => $_->name, 
-        value => $_->value,
-        param => $self->prf_defaults->find({ name => $_->name }),
-    } } $preferences->all;
+    } @expanded;
     return \@d;
 }
 
@@ -175,6 +181,14 @@ sub safe_preferences_in_array
         label => $_->{param}->comment,
     } } @$extra_params;
     return \@cleaned_up;
+}
+
+sub safe_prefs_to_hash
+{
+    my $self = shift;
+    my $info = $self->safe_preferences_in_array;
+    my %hash = map { $_->{name} => $_->{value} } @$info;
+    return \%hash;
 }
 
 sub prf_get

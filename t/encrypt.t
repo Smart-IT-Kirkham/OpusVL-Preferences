@@ -60,6 +60,12 @@ ok $results = TestOwner->with_fields({
 # FIXME: how should we let the dev know about this?
 is $results->count, 0, 'Search by pin should return 0 results because not using searchable crypto';
 
+eq_or_diff {
+    email => 'blackhole@opusvl.com',
+    pin => 10013211,
+}, $o->safe_prefs_to_hash;
+
+
 # FIXME: test unique fields.
 # default values
 # also auditing
