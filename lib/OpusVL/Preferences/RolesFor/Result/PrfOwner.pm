@@ -59,6 +59,10 @@ Returns the same as preferences_to_array but instead of the param object it retu
 field label.  The safe refers to the fact that all the items in the hash are base types
 and therefore are trivially serializable.
 
+=head2 safe_prefs_to_hash
+
+Returns the same as safe_prefs_to_hash but converts it to a hash for easier use.
+
 =head1 COPYRIGHT and LICENSE
 
 Copyright (C) 2011 OpusVL
