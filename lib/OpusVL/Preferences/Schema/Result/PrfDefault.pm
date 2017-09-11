@@ -244,6 +244,7 @@ sub mask_function
     my $self = shift;
     return sub {
         my $val = shift;
+        return $val unless length $self->mask_char;
         return mask_text($self->mask_char, $self->display_mask, $val);
     };
 }
