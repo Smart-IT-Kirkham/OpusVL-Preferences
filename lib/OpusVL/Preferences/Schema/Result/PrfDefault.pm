@@ -258,6 +258,14 @@ return 1;
 
 =head1 DESCRIPTION
 
+This table, despite its name, actually holds the field I<definitions> for the
+preferences.
+
+Each field definition is stored against the prf_owner_types table, which maps
+the host schema's table and resultset class to an internal ID.
+
+Thus we define the fields available to a prf_owner, different per type.
+
 =head1 METHODS
 
 =head2 form_options

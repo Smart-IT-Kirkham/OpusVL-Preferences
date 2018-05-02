@@ -73,6 +73,18 @@ return 1;
 
 =head1 DESCRIPTION
 
+This table actually contains the preference values; there is one row per field, per owner.
+
+The owner_id column and owner_type_id column do the exact same thing as the
+PrfOwner table, except here, they're a foreign key into the PrfOwner table.
+
+That is to say, the prf_owner_id relates to an arbitrary table defined by the
+host schema, and prf_owner_type_id refers to the prf_owner_types table, which
+maps a number to the tables defined by the host schema.
+
+For literally no reason whatsoever, the prf_owners table *also* encodes this
+association, in a completely redundant fashion.
+
 =head1 METHODS
 
 =head1 ATTRIBUTES

@@ -57,6 +57,9 @@ __PACKAGE__->belongs_to(parent_value =>
 
 =head1 DESCRIPTION
 
+I thought this was obvious until I realised it has a 'name' column and now I
+have no idea what it does.
+
 =head1 METHODS
 
 =head1 ATTRIBUTES

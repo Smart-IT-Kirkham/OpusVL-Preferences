@@ -9,9 +9,6 @@ use namespace::autoclean;
 
 extends 'DBIx::Class::Core';
 
-__PACKAGE__->table("prf_owners");
-
-__PACKAGE__->add_columns
 (
 	prf_owner_id =>
 	{
@@ -67,6 +64,14 @@ return 1;
 
 
 =head1 DESCRIPTION
+
+This table associates PrfOwnerTypes with actual objects from the corresponding
+table. The C<owner_id> tells us which object it is, and the C<owner_type_id>
+links to the PrfOwnerType class, which tells us which table and resultset it is.
+
+I don't know why it's necessary to store which rows from the host table have a
+preferences object stored against them, without also storing that preferences
+object in the same place.
 
 =head1 METHODS
 

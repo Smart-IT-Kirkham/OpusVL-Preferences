@@ -63,6 +63,14 @@ return 1;
 
 =head1 DESCRIPTION
 
+This table for some reason stores an association between a table name, a
+resultset name, and a sequential ID. These correspond to the classes in the host
+database that are C<PrfOwner>s.
+
+This appears to be entirely so that we can use numbers instead of letters
+everywhere else.
+
+
 =head1 METHODS
 
 =head1 ATTRIBUTES

@@ -53,6 +53,9 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 DESCRIPTION
 
+Helpfully, this stores the actual default values for fields. Redundantly,
+because prf_defaults already has a default_value column.
+
 =head1 METHODS
 
 =head1 ATTRIBUTES
