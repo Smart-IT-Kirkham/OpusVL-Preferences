@@ -1,6 +1,6 @@
 package OpusVL::FB11X::Preferences;
 
-use Moose;
+use Moose::Role;
 use CatalystX::InjectComponent;
 
 our $VERSION = "0.001";
