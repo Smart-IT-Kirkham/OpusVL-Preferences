@@ -31,8 +31,8 @@ around hat => sub {
     my $self = shift;
     my $hat_name = shift;
 
-    if ($hat_name eq 'parameters') {
-        $hat_name = '+OpusVL::Preferences::Hat::parameters'
+    if ($hat_name eq 'preferences') {
+        $hat_name = '+OpusVL::Preferences::Hat::preferences'
     }
 
     $self->$orig($hat_name);

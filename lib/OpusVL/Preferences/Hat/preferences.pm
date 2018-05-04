@@ -1,6 +1,8 @@
 package OpusVL::Preferences::Hat::preferences;
 
+use v5.24;
 use Moose;
+with "OpusVL::FB11::Role::Hat";
 
 # ABSTRACT: Allows any FB11 component to do legacy Preferences stuff
 
@@ -8,10 +10,9 @@ sub schema { shift->__brain }
 
 sub register_extension {
     my $self = shift;
-    my $schema = shift;
-    $self->schema->load_classes(
-        ref $schema => \@_
-    );
+    my %namespaces = @_;
+
+    $self->schema->load_namespaces(%namespaces);
 }
 
 1;
@@ -41,7 +42,8 @@ The Preferences schema is the brain. The dbic_schema::is_brain hat is also worn.
 
 =head2 register_extension
 
-Pass another schema and all its classes are loaded into this schema.
+Pass a hashref a la L<DBIx::Class::Schema/load_namespaces> and it will be loaded
+in.
 
 This should only be done at Catalyst time so that we don't produce migrations
 for other schemata.

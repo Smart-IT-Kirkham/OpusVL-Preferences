@@ -1,4 +1,4 @@
-package OpusVL::AppKitX::TokenProcessor::Admin::Role::ParameterValueEditing;
+package OpusVL::FB11X::Preferences::Role::ParameterValueEditing;
 
 use 5.010;
 use Moose::Role;

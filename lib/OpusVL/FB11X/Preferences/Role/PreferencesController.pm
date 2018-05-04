@@ -1,4 +1,4 @@
-package OpusVL::AppKitX::TokenProcessor::Admin::Role::PreferencesController;
+package OpusVL::FB11X::Preferences::Role::PreferencesController;
 
 use Moose::Role;
 
@@ -8,7 +8,9 @@ sub index_preferences
 
     $self->add_final_crumb($c, 'Search');
     my $form = $c->stash->{form};
-    my $rs = $c->model('TokenDB')->resultset($self->resultset);
+    use Data::Dump; dd $c->model('PreferencesDB')->sources;
+
+    my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
     $c->stash->{preferences} = [$rs->prf_defaults->active_first];
     $c->stash->{enc} = defined $rs->result_source->schema->encryption_client;
 }
@@ -36,7 +38,7 @@ sub add_prefences
     my $form = $c->stash->{form};
     $self->add_final_crumb($c, 'Add');
 
-    my $rs = $c->model('TokenDB')->resultset($self->resultset);
+    my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
     delete $form->get_all_element('encrypted')->attributes()->{disabled};
     $self->do_form_setup($c, $form);
     if($form->submitted_and_valid)
@@ -92,7 +94,7 @@ sub do_preference_chain
     my ($self, $c, $id) = @_;
 
     $c->detach('/not_found') unless $id;
-    my $preference = $c->model('TokenDB')->resultset($self->resultset)->prf_defaults->find({ name => $id });
+    my $preference = $c->model('PreferencesDB')->resultset($self->resultset)->prf_defaults->find({ name => $id });
     $c->detach('/not_found') unless $preference;
     $c->stash->{preference} = $preference;
     $c->stash->{preference_name} = $id;
@@ -114,7 +116,7 @@ sub edit_prefences
         my $name = $form->param_value('name');
         unless($c->stash->{preference_name} eq $name)
         {
-            my $rs = $c->model('TokenDB')->resultset($self->resultset);
+            my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
             if($rs->prf_defaults->find({ name => $name }))
             {
                 # they are trying to rename the preference and it clashes
@@ -259,10 +261,6 @@ sub prefence_values
 
 
 1;
-
-=head1 NAME
-
-OpusVL::AppKitX::TokenProcessor::Admin::Role::PreferencesController
 
 =head1 DESCRIPTION
 
