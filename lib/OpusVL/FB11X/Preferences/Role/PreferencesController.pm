@@ -7,9 +7,8 @@ sub index_preferences
     my ($self, $c) = @_;
 
     $self->add_final_crumb($c, 'Search');
+    $c->stash->{object_name} = $self->resultset;
     my $form = $c->stash->{form};
-    use Data::Dump; dd $c->model('PreferencesDB')->sources;
-
     my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
     $c->stash->{preferences} = [$rs->prf_defaults->active_first];
     $c->stash->{enc} = defined $rs->result_source->schema->encryption_client;

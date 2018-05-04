@@ -6,12 +6,24 @@ with "OpusVL::FB11::Role::Hat";
 
 # ABSTRACT: Allows any FB11 component to do legacy Preferences stuff
 
+has classes_with_preferences => (
+    is => 'rw',
+    traits => ['Array'],
+    isa => 'ArrayRef',
+    handles => {
+        add_pref_class => 'push'
+    }
+);
+
 sub schema { shift->__brain }
 
 sub register_extension {
     my $self = shift;
     my %namespaces = @_;
 
+    my $classes = delete $namespaces{preferences_sources};
+
+    $self->add_pref_class(@$classes);
     $self->schema->load_namespaces(%namespaces);
 }
 

@@ -1,0 +1,2 @@
+<h1>[% preference.name %] values</h1>
+[% form.render | none %]
