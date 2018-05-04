@@ -11,7 +11,8 @@ has classes_with_preferences => (
     traits => ['Array'],
     isa => 'ArrayRef',
     handles => {
-        add_pref_class => 'push'
+        add_pref_class => 'push',
+        find_pref_class => 'first',
     }
 );
 
@@ -25,6 +26,13 @@ sub register_extension {
 
     $self->add_pref_class(@$classes);
     $self->schema->load_namespaces(%namespaces);
+}
+
+sub class_has_preferences {
+    my $self = shift;
+    my $class = shift;
+
+    return $self->find_pref_class( sub { $_ eq $class } );
 }
 
 1;

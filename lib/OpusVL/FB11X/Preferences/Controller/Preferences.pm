@@ -33,18 +33,50 @@ sub auto
 sub index
     : Path
     : Args(0)
-    : NavigationName('User Parameters')
-    : FB11Feature('User Parameters')
+    : NavigationName('Parameters')
+    : FB11Feature('Parameters')
+{
+    my ($self, $c) = @_;
+
+    $c->stash->{classes} = OpusVL::FB11::ComponentManager->brain('preferences')->hat('preferences')
+        ->classes_with_preferences;
+
+    $c->stash->{template} = 'pick_object.tt';
+}
+
+sub _result_class
+    : Chained('/')
+    : PathPart('preferences')
+    : CaptureArgs(1)
+    : FB11Feature('Parameters')
+{
+    my ($self, $c, $class) = @_;
+    my $hat = OpusVL::FB11::ComponentManager->brain('preferences')->hat('preferences');
+
+    if (! $hat->class_has_preferences($class)) {
+        $c->detach('/not_found');
+    }
+
+    $c->stash->{preferences_resultset} = $class;
+}
+
+sub list
+    : Chained('_result_class')
+    : PathPart
+    : Args(0)
+    : FB11Feature('parameters')
 {
     my ($self, $c) = @_;
     $self->index_preferences($c);
+    $c->stash->{template} = 'index.tt';
 }
 
 sub add
-    : Local
+    : Chained('_result_class')
+    : PathPart('add')
     : Args(0)
-    : FB11Feature('User Parameters')
-    : FB11Form('preferences/preferences/add.yml')
+    : FB11Feature('Parameters')
+    : FB11Form
 {
     my ($self, $c) = @_;
 
@@ -52,10 +84,10 @@ sub add
 }
 
 sub preference_chain
-    : Chained('/')
+    : Chained('_result_class')
     : CaptureArgs(1)
-    : FB11Feature('User Parameters')
-    : PathPart('users/preferences')
+    : FB11Feature('Parameters')
+    : PathPart('preferences')
 {
     my ($self, $c, $id) = @_;
     $self->do_preference_chain($c, $id);
@@ -64,8 +96,8 @@ sub preference_chain
 sub edit
     : Chained('preference_chain')
     : Args(0)
-    : FB11Feature('User Parameters')
-    : FB11Form('modules/preferences/add.yml')
+    : FB11Feature('Parameters')
+    : FB11Form('preferences/preferences/add.yml')
     : PathPart('edit')
 {
     my ($self, $c) = @_;
@@ -75,8 +107,8 @@ sub edit
 sub values
     : Chained('preference_chain')
     : Args(0)
-    : FB11Feature('User Parameters')
-    : FB11Form('modules/preferences/values.yml')
+    : FB11Feature('Parameters')
+    : FB11Form
     : PathPart('values')
 {
     my ($self, $c) = @_;

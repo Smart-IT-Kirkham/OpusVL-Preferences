@@ -1,0 +1,7 @@
+<div class="fb11-card">
+  [% FOREACH class IN classes %]
+    <a href="[% c.uri_for( c.controller.action_for('list'), [ classes ] ) %]">
+      [% class %]
+    </a>
+  [% END %]
+</div>

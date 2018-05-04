@@ -7,9 +7,9 @@ sub index_preferences
     my ($self, $c) = @_;
 
     $self->add_final_crumb($c, 'Search');
-    $c->stash->{object_name} = $self->resultset;
+    $c->stash->{object_name} = $c->stash->{preferences_resultset} || $self->resultset;
     my $form = $c->stash->{form};
-    my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
+    my $rs = $c->model('PreferencesDB')->resultset($c->stash->{object_name});
     $c->stash->{preferences} = [$rs->prf_defaults->active_first];
     $c->stash->{enc} = defined $rs->result_source->schema->encryption_client;
 }
@@ -37,7 +37,9 @@ sub add_prefences
     my $form = $c->stash->{form};
     $self->add_final_crumb($c, 'Add');
 
-    my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
+    $c->stash->{object_name} = $c->stash->{preferences_resultset} || $self->resultset;
+
+    my $rs = $c->model('PreferencesDB')->resultset($c->stash->{object_name});
     delete $form->get_all_element('encrypted')->attributes()->{disabled};
     $self->do_form_setup($c, $form);
     if($form->submitted_and_valid)
@@ -93,7 +95,10 @@ sub do_preference_chain
     my ($self, $c, $id) = @_;
 
     $c->detach('/not_found') unless $id;
-    my $preference = $c->model('PreferencesDB')->resultset($self->resultset)->prf_defaults->find({ name => $id });
+
+    $c->stash->{object_name} = $c->stash->{preferences_resultset} || $self->resultset;
+
+    my $preference = $c->model('PreferencesDB')->resultset($c->stash->{object_name})->prf_defaults->find({ name => $id });
     $c->detach('/not_found') unless $preference;
     $c->stash->{preference} = $preference;
     $c->stash->{preference_name} = $id;
@@ -107,6 +112,8 @@ sub edit_prefences
     my $form = $c->stash->{form};
     $self->add_final_crumb($c, 'Edit');
 
+    $c->stash->{object_name} = $c->stash->{preferences_resultset} || $self->resultset;
+
     my $preference = $c->stash->{preference};
     $self->do_form_setup($c, $form);
     if($form->submitted_and_valid)
@@ -115,7 +122,7 @@ sub edit_prefences
         my $name = $form->param_value('name');
         unless($c->stash->{preference_name} eq $name)
         {
-            my $rs = $c->model('PreferencesDB')->resultset($self->resultset);
+            my $rs = $c->model('PreferencesDB')->resultset($c->stash->{object_name});
             if($rs->prf_defaults->find({ name => $name }))
             {
                 # they are trying to rename the preference and it clashes
