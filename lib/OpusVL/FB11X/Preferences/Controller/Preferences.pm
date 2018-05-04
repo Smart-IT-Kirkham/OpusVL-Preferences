@@ -1,11 +1,13 @@
 package OpusVL::FB11X::Preferences::Controller::Preferences;
 
 use Moose;
+use OpusVL::FB11::ComponentManager;
 use namespace::autoclean;
+use v5.24;
+
 BEGIN { extends 'Catalyst::Controller::HTML::FormFu'; };
 with 'OpusVL::FB11::RolesFor::Controller::UI',
     'OpusVL::FB11::FormFu::RoleFor::Controller',
-    'OpusVL::FB11X::TokenProcessor::Admin::Role::ControllerMenuTranslate',
     'OpusVL::FB11X::Preferences::Role::PreferencesController';
 
 has resultset => (is => 'ro', isa => 'Str', default => 'User');
@@ -38,10 +40,13 @@ sub index
 {
     my ($self, $c) = @_;
 
-    $c->stash->{classes} = OpusVL::FB11::ComponentManager->brain('preferences')->hat('preferences')
-        ->classes_with_preferences;
+    $c->stash->{classes}->@* = OpusVL::FB11::ComponentManager
+        ->brain('preferences')
+        ->hat('preferences')
+        ->classes_with_preferences
+    ;
 
-    $c->stash->{template} = 'pick_object.tt';
+    $c->stash->{template} = 'preferences/pick_object.tt';
 }
 
 sub _result_class
@@ -57,6 +62,9 @@ sub _result_class
         $c->detach('/not_found');
     }
 
+    my $index_url = $c->uri_for($self->action_for('list'), [ $class ]);
+    $c->stash->{index_url} = $index_url;
+
     $c->stash->{preferences_resultset} = $class;
 }
 
@@ -64,11 +72,11 @@ sub list
     : Chained('_result_class')
     : PathPart
     : Args(0)
-    : FB11Feature('parameters')
+    : FB11Feature('Parameters')
 {
     my ($self, $c) = @_;
     $self->index_preferences($c);
-    $c->stash->{template} = 'index.tt';
+    $c->stash->{template} = 'preferences/index.tt';
 }
 
 sub add
@@ -97,7 +105,7 @@ sub edit
     : Chained('preference_chain')
     : Args(0)
     : FB11Feature('Parameters')
-    : FB11Form('preferences/preferences/add.yml')
+    : FB11Form('preferences/add.yml')
     : PathPart('edit')
 {
     my ($self, $c) = @_;

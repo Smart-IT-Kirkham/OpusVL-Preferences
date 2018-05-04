@@ -6,13 +6,14 @@ with "OpusVL::FB11::Role::Hat";
 
 # ABSTRACT: Allows any FB11 component to do legacy Preferences stuff
 
-has classes_with_preferences => (
+has _classes_with_preferences => (
     is => 'rw',
     traits => ['Array'],
     isa => 'ArrayRef',
     handles => {
         add_pref_class => 'push',
         find_pref_class => 'first',
+        classes_with_preferences => 'uniq',
     }
 );
 

@@ -18,6 +18,11 @@ after setup_components => sub {
         component => 'OpusVL::FB11X::Model::PreferencesDB',
         as        => 'Model::PreferencesDB'
     );
+    CatalystX::InjectComponent->inject(
+        into      => $class,
+        component => 'OpusVL::FB11X::Preferences::Controller::Preferences',
+        as        => 'Controller::Preferences'
+    );
 
 };
 
