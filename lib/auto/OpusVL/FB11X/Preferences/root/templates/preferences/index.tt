@@ -41,15 +41,18 @@
                   <td>[% IF pref.confirmation_required %]Yes[% ELSE %]No[% END %]</td>
                   [% PROCESS extra_field_values | none %]
                   <td>
-                      <a href="[% c.uri_for(c.controller.action_for('edit'), [ pref.name ]) %]">edit</a>
+                      <a href="[% c.uri_for(c.controller.action_for('edit'), [
+                        object_name, pref.name ]) %]">edit</a>
                       [% IF pref.data_type == 'select' %]
-                          <a href="[% c.uri_for(c.controller.action_for('values'), [ pref.name ]) %]">values</a>
+                          <a href="[%
+                            c.uri_for(c.controller.action_for('values'), [
+                            object_name, pref.name ]) %]">values</a>
                       [% END %]
                   </td>
               </tr>
           [% END %]
       </tbody>
   </table>
-  <a href="[% c.uri_for(c.controller.action_for('add')) %]"
+  <a href="[% c.uri_for(c.controller.action_for('add'), [ object_name ]) %]"
     class="btn btn-primary">Add</a>
 </div>
