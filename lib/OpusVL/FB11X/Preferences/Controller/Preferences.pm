@@ -18,7 +18,7 @@ __PACKAGE__->config
     # As far as I can tell this is only needed by deprecated stuff
     # coughformfucough so we don't have to be accurate about it
     fb11_myclass              => 'OpusVL::FB11X::Preferences',
-    fb11_method_group         => 'Users',
+    fb11_method_group         => 'System',
     fb11_method_group_order   => 2,
     fb11_shared_module        => 'Admin',
 );
