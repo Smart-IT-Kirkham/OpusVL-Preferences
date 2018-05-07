@@ -3,8 +3,17 @@ package OpusVL::Preferences::RolesFor::ResultSet::PrfOwner;
 
 use strict;
 use warnings;
+use v5.24;
 use Moose::Role;
 use Carp;
+use OpusVL::FB11::ComponentManager;
+
+sub _schema {
+    state $schema = OpusVL::FB11::ComponentManager
+        ->brain('preferences')
+        ->hat('preferences')
+        ->schema;
+}
 
 sub prf_get_default
 {
@@ -41,25 +50,22 @@ sub prf_set_default
 sub setup_owner_type
 {
 	my $self   = shift;
-	my $schema = $self->result_source->schema;
 	my $source = $self->result_source;
 
-	return $schema->resultset ('PrfOwnerType')->setup_from_source ($source);
+	return _schema->resultset ('PrfOwnerType')->setup_from_source ($source);
 }
 
 sub get_owner_type
 {
 	my $self   = shift;
-	my $schema = $self->result_source->schema;
 	my $source = $self->result_source;
 
-	return $schema->resultset ('PrfOwnerType')->get_from_source ($source);
+	return _schema->resultset ('PrfOwnerType')->get_from_source ($source);
 }
 
 sub prf_defaults
 {
 	my $self   = shift;
-	my $schema = $self->result_source->schema;
 	my $type   = $self->setup_owner_type;      # we always want a result here
 
 	return $type->prf_defaults;
@@ -80,8 +86,7 @@ sub with_fields
     my $x = 1;
     # well this sucks, we need to figure out if these are encrypted fields.
     # we can't do this entirely at the DB layer.
-    my $schema = $self->result_source->schema;
-    my $crypto = $schema->encryption_client;
+    my $crypto = _schema->encryption_client;
     if($crypto)
     {
         # no point in checking for encryption unless we have a crypto object setup.
