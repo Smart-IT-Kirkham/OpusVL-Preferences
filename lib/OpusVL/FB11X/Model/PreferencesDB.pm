@@ -21,23 +21,17 @@ has short_name => (
 );
 
 sub hats {
-    qw/parameters dbic_schema::is_brain/
+    (
+        parameters => {
+            class =>  '+OpusVL::Preferences::Hat::preferences'
+        },
+        dbic_schema => {
+            class => 'dbic_schema::is_brain'
+        },
+    )
 }
 
 with "OpusVL::FB11::Role::Brain";
-
-around hat => sub {
-    my $orig = shift;
-    my $self = shift;
-    my $hat_name = shift;
-
-    if ($hat_name eq 'preferences') {
-        $hat_name = '+OpusVL::Preferences::Hat::preferences'
-    }
-
-    $self->$orig($hat_name);
-};
-
 
 1;
 
