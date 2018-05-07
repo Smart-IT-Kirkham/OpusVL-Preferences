@@ -6,10 +6,10 @@ use warnings;
 use v5.24;
 use Moose::Role;
 use Carp;
-use OpusVL::FB11::ComponentManager;
+use OpusVL::FB11::Hive;
 
 sub _schema {
-    state $schema = OpusVL::FB11::ComponentManager
+    state $schema = OpusVL::FB11::Hive
         ->brain('preferences')
         ->hat('preferences')
         ->schema;

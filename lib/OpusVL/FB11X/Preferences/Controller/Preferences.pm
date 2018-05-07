@@ -1,7 +1,7 @@
 package OpusVL::FB11X::Preferences::Controller::Preferences;
 
 use Moose;
-use OpusVL::FB11::ComponentManager;
+use OpusVL::FB11::Hive;
 use namespace::autoclean;
 use v5.24;
 
@@ -40,7 +40,7 @@ sub index
 {
     my ($self, $c) = @_;
 
-    $c->stash->{classes}->@* = OpusVL::FB11::ComponentManager
+    $c->stash->{classes}->@* = OpusVL::FB11::Hive
         ->brain('preferences')
         ->hat('preferences')
         ->classes_with_preferences
@@ -56,7 +56,7 @@ sub _result_class
     : FB11Feature('Parameters')
 {
     my ($self, $c, $class) = @_;
-    my $hat = OpusVL::FB11::ComponentManager->brain('preferences')->hat('preferences');
+    my $hat = OpusVL::FB11::Hive->brain('preferences')->hat('preferences');
 
     if (! $hat->class_has_preferences($class)) {
         $c->detach('/not_found');
