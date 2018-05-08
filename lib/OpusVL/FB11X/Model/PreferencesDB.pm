@@ -22,7 +22,7 @@ has short_name => (
 
 sub hats {
     (
-        parameters => {
+        preferences => {
             class =>  '+OpusVL::Preferences::Hat::preferences'
         },
         dbic_schema => {
