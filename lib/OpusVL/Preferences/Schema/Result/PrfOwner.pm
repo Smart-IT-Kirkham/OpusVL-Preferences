@@ -9,6 +9,9 @@ use namespace::autoclean;
 
 extends 'DBIx::Class::Core';
 
+__PACKAGE__->table("prf_owners");
+
+__PACKAGE__->add_columns
 (
 	prf_owner_id =>
 	{
