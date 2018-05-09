@@ -61,6 +61,11 @@ __PACKAGE__->add_columns
         data_type => 'boolean',
         is_nullable => 1,
     },
+    gdpr_erasable =>
+    {
+        data_type => 'boolean',
+        is_nullable => 1,
+    },
 
     audit => {
         data_type => 'boolean',
