@@ -2,7 +2,7 @@ package OpusVL::FB11X::Preferences::Role::ParameterValueEditing;
 
 use 5.010;
 use Moose::Role;
-use experimental 'smartmatch';
+use Switch::Plain 'sswitch';
 
 sub add_prefs_defaults
 {
@@ -32,6 +32,9 @@ sub add_prefs_defaults
     return $defaults;
 }
 
+# DEBT: I don't know how to decouple this from the token processor because it's
+# doing audit trail stuff. The Brain architecture needs to be more mature to do
+# that.
 sub update_prefs_values
 {
     my ($self, $c, $object) = @_;
@@ -39,7 +42,8 @@ sub update_prefs_values
     # FIXME: to use two methods below instead.
     my $form = $c->stash->{form};
     my @fields = $object->prf_defaults->active->all;
-    my $params = $c->model('TokenDB')->schema->sys_params;
+    my $params = OpusVL::FB11::Hive->service('sysparams')->for_component('preferences');
+
     for my $field (@fields)
     {
         my $name = $field->name;
@@ -75,7 +79,8 @@ sub update_prefs_values
                     my $to = $field->name eq 'email' ? $object->prf_get('email') : $value;
 
                     if ($field->name eq $phone_field) { $object->prf_set($name, $value); }
-                    $c->controller('Modules::TokenFunctions')->_send_email(
+                    # DEBT: We need a mail service in the hive
+                    $c->controller('TokenFunctions')->_send_email(
                         $c,
                         undef,
                         $c->user,
@@ -237,28 +242,26 @@ sub construct_form_fields_ex
                 label => $field->comment,
                 name => $name,
             };
-            given($field->data_type)
+            sswitch ($field->data_type)
             {
-                when(/email/) {
+                case 'email': {
                     $details->{constraints} = [ { type => 'Email' } ];
                     $details->{filters} = [ { type => 'TrimEdges' } ];
                 }
-                when(/textarea/) {
+                case 'textarea': {
                     $details->{type} = 'Textarea';
                     $details->{filters} = [ { type => 'TrimEdges' } ];
                 }
-                when(/text/) {
-                }
-                when(/number/) {
+                case 'number': {
                     $details->{constraints} = [ { type => 'Number' } ];
                     $details->{filters} = [ { type => 'TrimEdges' } ];
                     $extra = '';
                 }
-                when(/boolean/) {
+                case 'boolean': {
                     $details->{type} = 'Checkbox';
                     $extra = '';
                 }
-                when(/date/) {
+                case 'date': {
                     $details->{attributes} = {
                         autocomplete => 'off',
                         class => 'date_picker',
@@ -277,12 +280,12 @@ sub construct_form_fields_ex
                     };
                     $extra = '';
                 }
-                when(/integer/) {
+                case 'integer': {
                     $details->{constraints} = [ { type => 'Integer' } ];
                     $details->{filters} = [ { type => 'TrimEdges' } ];
                     $extra = '';
                 }
-                when(/select/) {
+                case 'select': {
                     $details->{type} = 'Select';
                     $details->{empty_first} = 1;
                     $details->{options} = $field->form_options;
@@ -312,7 +315,9 @@ sub construct_form_fields_ex
                 {
                     $details->{validator} = [] unless(exists $details->{validator});
                     push @{$details->{validator}}, { 
-                        type => '+OpusVL::AppKitX::TokenProcessor::Admin::FormFu::Validator::UniquePreference',
+                        # DEBT: I've updated this to FB11 but it should belong to us!
+                        # But this whole module is debt so ugh
+                        type => '+OpusVL::FB11::TokenProcessor::Admin::FormFu::Validator::UniquePreference',
                     };
                 }
                 if($field->can('ajax_validate') && $field->ajax_validate)
