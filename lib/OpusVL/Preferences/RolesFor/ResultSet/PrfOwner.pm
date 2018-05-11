@@ -10,8 +10,7 @@ use OpusVL::FB11::Hive;
 
 sub _schema {
     state $schema = OpusVL::FB11::Hive
-        ->brain('preferences')
-        ->hat('preferences')
+        ->fancy_hat('preferences')
         ->schema;
 }
 

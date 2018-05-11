@@ -41,8 +41,7 @@ sub index
     my ($self, $c) = @_;
 
     $c->stash->{classes}->@* = OpusVL::FB11::Hive
-        ->brain('preferences')
-        ->hat('preferences')
+        ->fancy_hat('preferences')
         ->classes_with_preferences
     ;
 
@@ -56,7 +55,7 @@ sub _result_class
     : FB11Feature('Parameters')
 {
     my ($self, $c, $class) = @_;
-    my $hat = OpusVL::FB11::Hive->brain('preferences')->hat('preferences');
+    my $hat = OpusVL::FB11::Hive->fancy_hat('preferences');
 
     if (! $hat->class_has_preferences($class)) {
         $c->detach('/not_found');
