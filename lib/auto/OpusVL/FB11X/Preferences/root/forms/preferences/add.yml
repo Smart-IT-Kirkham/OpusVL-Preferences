@@ -87,6 +87,11 @@ elements:
         name: hidden
         label: Hidden
 
+      - type: Checkbox
+        name: gdpr_erasable
+        label: GDPR Erasable
+
+
       - type: Text
         name: display_order
         label: Display Order
