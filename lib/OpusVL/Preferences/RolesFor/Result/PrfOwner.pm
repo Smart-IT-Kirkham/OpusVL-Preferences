@@ -238,6 +238,9 @@ sub _clear_out_inactive_unique_values
     my $self = shift;
     my $prefname = shift;
     my $field = shift;
+    # DEBT
+    warn "Cannot clear out inactive unique values because I'm not prepared to write the code";
+    return;
 
     my $schema = $self->result_source->schema;
     my $obj_rs = $schema->resultset($self->prf_owner_type->owner_resultset);
