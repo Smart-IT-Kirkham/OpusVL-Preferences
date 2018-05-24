@@ -238,19 +238,22 @@ sub _clear_out_inactive_unique_values
     my $self = shift;
     my $prefname = shift;
     my $field = shift;
-    # DEBT
-    warn "Cannot clear out inactive unique values because I'm not prepared to write the code";
-    return;
 
-    my $schema = $self->result_source->schema;
+    my $schema = $self->_schema;
     my $obj_rs = $schema->resultset($self->prf_owner_type->owner_resultset);
     if($obj_rs->can('inactive_for_unique_params'))
     {
         my $rs = $obj_rs->inactive_for_unique_params;
-        $rs->search_related('prf_owner')->search_related('prf_preferences', 
-           { 
-               "prf_preferences.name" => $prefname, 
-               "prf_preferences.prf_owner_type_id" => $field->prf_owner_type_id, 
+        $schema->resultset('PrfOwner')->search({
+            "prf_preferences.prf_owner_id"      => {
+                -in => [ $rs->get_column($self->prf_id_column)->all ],
+            },
+            "prf_preferences.prf_owner_type_id" => $self->prf_owner_type_id
+        })
+        ->search_related('prf_preferences',
+           {
+               "prf_preferences.name" => $prefname,
+               "prf_preferences.prf_owner_type_id" => $field->prf_owner_type_id,
            }
         )->search_related('unique_value')->delete;
     }
