@@ -71,9 +71,16 @@ This software is licensed according to the "IP Assignment Schedule" provided wit
 
 =cut
 
+use v5.24;
 use strict;
 use warnings;
 use Moose::Role;
+
+sub _schema {
+    state $schema = OpusVL::FB11::Hive
+        ->fancy_hat('preferences')
+        ->schema;
+}
 
 =head2 prf_id_column
 
@@ -99,23 +106,21 @@ sub prf_owner_init
 			is_foreign_key => 1
 		}
 	);
+}
 
-	$class->belongs_to
-	(
-		prf_owner => 'OpusVL::Preferences::Schema::Result::PrfOwner',
-		{
-			'foreign.prf_owner_id'      => 'self.' . $class->prf_id_column,
-			'foreign.prf_owner_type_id' => 'self.prf_owner_type_id'
-		}
-	);
+sub prf_owner {
+    my $self = shift;
+    return $self->_schema->resultset('PrfOwner')->find({
+        prf_owner_type_id => $self->prf_owner_type_id,
+        prf_owner_id => $self->${ \$self->prf_id_column },
+    });
+}
 
-	$class->belongs_to
-	(
-		prf_owner_type => 'OpusVL::Preferences::Schema::Result::PrfOwnerType',
-		{
-			'foreign.prf_owner_type_id' => 'self.prf_owner_type_id'
-		}
-	);
+sub prf_owner_type {
+    my $self = shift;
+    return $self->_schema->resultset('PrfOwnerType')->find({
+        prf_owner_type_id => $self->prf_owner_type_id
+    });
 }
 
 after insert => sub
