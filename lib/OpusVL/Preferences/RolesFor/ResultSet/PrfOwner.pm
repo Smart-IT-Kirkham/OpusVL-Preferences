@@ -120,8 +120,37 @@ sub with_fields
         push @joins, 'prf_preferences';
         $x++;
     }
-    return $self->search({ -and => \@params }, {
-        join => { prf_owner => \@joins }
+
+    # FIXME: This runs many queries but I'm too overwhelmed right now
+
+    # We want to find all PrfOwner rows whose PrfPreference values match the
+    # query. This is enough information to filter the existing resultset.
+    # We can't use join any more, because the existing resultset won't have any
+    # relationships into this code.
+
+    my $local_query = _schema->resultset('PrfOwner')->search({
+        # They will all have the same ID here. This is a silly architecture.
+        "me.prf_owner_type_id" => $self->get_column('prf_owner_type_id')->first,
+
+        # Assume the id column is the id column because this is a hack
+        "me.prf_owner_id" => {
+            -in => $self->get_column('id')->as_query,
+        },
+    });
+
+    # Join on the PrfPreferences
+    $local_query = $local_query->search({
+        -and => \@params
+    }, {
+        join => \@joins
+    });
+
+    # Now add the resulting prf_owner_ids back as a filter on the original ID
+    # column.
+    return $self->search({
+        id => {
+            -in => $local_query->get_column('prf_owner_id')->as_query
+        }
     });
 }
 
