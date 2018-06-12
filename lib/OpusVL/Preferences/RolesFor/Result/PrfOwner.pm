@@ -126,7 +126,7 @@ sub prf_owner_type {
 after insert => sub
 {
 	my $self   = shift;
-	my $schema = $self->result_source->schema;
+	my $schema = _schema;
 	my $type   = $schema->resultset ('PrfOwnerType')->setup_from_source ($self->result_source);
 
 	# Ensure that any auto-generated values have been populated (in case the
@@ -215,7 +215,7 @@ sub prf_get
     {
         if($pref)
         {
-            my $schema = $self->result_source->schema;
+            my $schema = _schema;
             my $crypto = $schema->encryption_client;
             if($crypto)
             {
