@@ -148,7 +148,7 @@ sub with_fields
     # Now add the resulting prf_owner_ids back as a filter on the original ID
     # column.
     return $self->search({
-        id => {
+        "me.id" => {
             -in => $local_query->get_column('prf_owner_id')->as_query
         }
     });
