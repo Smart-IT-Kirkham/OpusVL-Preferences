@@ -75,6 +75,7 @@ use v5.24;
 use strict;
 use warnings;
 use Moose::Role;
+use Scalar::IfDefined qw/$ifdef/;
 
 sub _schema {
     state $schema = OpusVL::FB11::Hive
@@ -156,14 +157,16 @@ sub prf_preferences
 
 	my $self = shift;
 
-	return $self->prf_owner->prf_preferences;
+	return $self->prf_owner->$ifdef('prf_preferences');
 }
 
 sub preferences_to_array
 {
     my $self = shift;
 
-    my $preferences = $self->prf_preferences;
+    my $preferences = $self->prf_preferences
+        or return [];
+
     my @expanded;
     for my $pref ($preferences->all)
     {
