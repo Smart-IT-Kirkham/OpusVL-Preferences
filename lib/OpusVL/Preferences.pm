@@ -5,7 +5,7 @@ use strict;
 
 # ABSTRACT: Generic DBIC preferences module
 
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 
 
 =head1 SYNOPSIS
