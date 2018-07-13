@@ -251,7 +251,6 @@ sub construct_form_fields_ex
             sswitch ($field->data_type)
             {
                 case 'email': {
-                    $details->{constraints} = [ { type => 'Email' } ];
                     $details->{filters} = [ { type => 'TrimEdges' } ];
                 }
                 case 'textarea': {
