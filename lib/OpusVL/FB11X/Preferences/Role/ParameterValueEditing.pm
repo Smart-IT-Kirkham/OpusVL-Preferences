@@ -264,7 +264,7 @@ sub construct_form_fields_ex
                 }
                 case 'boolean': {
                     $details->{type} = 'Select';
-                    $details->{empty_first} = 1 if $args->{search_form};
+                    $details->{empty_first} = !! $search;
                     $details->{options} = [ [ 1 => 'Yes' ], [ 0 => 'No' ] ];
                     $extra = '';
                 }
