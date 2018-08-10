@@ -2,6 +2,10 @@ Revision history for OpusVL-Preferences
 
 {{ $NEXT }}
 
+0.33      2018-08-10 11:32:36+01:00 Europe/London
+
+  * Created deployment for nullable fields
+
 0.32      2018-08-10 10:32:36+01:00 Europe/London
 
   * Fixed display mask and mask char. Both fields are nullable. Mask char is
