@@ -4,6 +4,7 @@ requires "DBIx::Class::Schema" => "0";
 requires "Moose" => "0";
 requires "Moose::Role" => "0";
 requires "MooseX::NonMoose" => "0";
+requires "Scalar::IfDefined";
 requires "namespace::autoclean" => "0";
 requires "perl" => "5.010";
 requires "strict" => "0";
